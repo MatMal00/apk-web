@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { SWRConfig } from "swr";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, DefaultLayout, Login, ProtectedRoute } from "./components";
+import { Home, DefaultLayout, Login, ProtectedRoute, Register } from "./components";
 import { ROUTE } from "./constants";
 import { Toaster } from "react-hot-toast";
 
@@ -14,6 +14,7 @@ const App: FC = () => {
                     <Routes>
                         <Route element={<DefaultLayout />}>
                             <Route element={<Login />} path={ROUTE.LOGIN} />
+                            <Route element={<Register />} path={ROUTE.REGISTER} />
                             <Route element={<ProtectedRoute />}>
                                 <Route element={<Home />} path={ROUTE.HOME} />
                             </Route>
