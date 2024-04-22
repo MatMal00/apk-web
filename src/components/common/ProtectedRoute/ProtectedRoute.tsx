@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { ROUTE } from "src/constants";
-import { useAuth } from "src/libs";
+import { useAuth } from "src/hooks";
 
 interface IProtectedRouteProps {}
 

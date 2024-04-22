@@ -29,6 +29,17 @@ export const doSignInWithGoogle = async () => {
     }
 };
 
+export const doSignUpWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user: User | null = result.user; // User can be null
+
+    // add user to firestore (check for null user before accessing properties)
+    if (user) {
+        // ... your logic using user object
+    }
+};
+
 export const doSignOut = async () => {
     return auth.signOut();
 };
