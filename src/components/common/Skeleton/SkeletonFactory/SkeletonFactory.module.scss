@@ -1,0 +1,47 @@
+// $skeleton-background-color: #949494;
+// $skeleton-highlight-color: #808080;
+
+// .avatarSkeleton {
+//     background: linear-gradient(
+//         90deg,
+//         $skeleton-background-color 25%,
+//         $skeleton-highlight-color 50%,
+//         $skeleton-background-color 75%
+//     );
+//     background-size: 200% 100%;
+//     animation: loading 2s infinite ease-in-out;
+//     border-radius: 50%;
+// }
+
+// .titleSkeleton {
+//     background: linear-gradient(
+//         90deg,
+//         $skeleton-background-color 25%,
+//         $skeleton-highlight-color 50%,
+//         $skeleton-background-color 75%
+//     );
+//     background-size: 200% 100%;
+//     animation: loading 2s infinite ease-in-out;
+//     border-radius: 8px;
+// }
+
+// .contentAreaSkeleton {
+//     background: linear-gradient(
+//         90deg,
+//         $skeleton-background-color 25%,
+//         $skeleton-highlight-color 50%,
+//         $skeleton-background-color 75%
+//     );
+//     background-size: 200% 100%;
+//     animation: loading 2s infinite ease-in-out;
+//     border-radius: 8px;
+// }
+
+// @keyframes loading {
+//     0% {
+//         background-position: 200% 0;
+//     }
+//     100% {
+//         background-position: -200% 0;
+//     }
+// }
