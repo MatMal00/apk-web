@@ -13,9 +13,10 @@ const App: FC = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route element={<DefaultLayout />}>
-                            <Route element={<Home />} path={ROUTE.HOME} />
                             <Route element={<Login />} path={ROUTE.LOGIN} />
-                            <Route element={<ProtectedRoute />}></Route>
+                            <Route element={<ProtectedRoute />}>
+                                <Route element={<Home />} path={ROUTE.HOME} />
+                            </Route>
                             <Route path="*" element={<h2>Not Found</h2>} />
                         </Route>
                     </Routes>
