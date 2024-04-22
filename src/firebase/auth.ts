@@ -1,4 +1,4 @@
-import { auth } from "./firebase";
+import { auth } from "./firebase.config";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -21,23 +21,9 @@ export const doSignInWithEmailAndPassword = async (email: string, password: stri
 export const doSignInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
-    const user: User | null = result.user; // User can be null
+    const user: User | null = result.user;
 
-    // add user to firestore (check for null user before accessing properties)
-    if (user) {
-        // ... your logic using user object
-    }
-};
-
-export const doSignUpWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user: User | null = result.user; // User can be null
-
-    // add user to firestore (check for null user before accessing properties)
-    if (user) {
-        // ... your logic using user object
-    }
+    return user;
 };
 
 export const doSignOut = async () => {

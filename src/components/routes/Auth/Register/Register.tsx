@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Input } from "src/components/common";
 import { ROUTE } from "src/constants";
-import { doCreateUserWithEmailAndPassword, doSignUpWithGoogle } from "src/firebase/auth";
+import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from "src/firebase/auth";
 import { registerSchema } from "src/helpers";
 import { useAuth, useNavigateOnLoggedIn } from "src/hooks";
 
@@ -11,7 +11,7 @@ export const Register: FC = () => {
     const { isLoggedIn } = useAuth();
     useNavigateOnLoggedIn(isLoggedIn);
 
-    const registerWithGoogle = () => doSignUpWithGoogle();
+    const registerWithGoogle = () => doSignInWithGoogle();
 
     return (
         <section className="flex justify-center">
