@@ -5,6 +5,7 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
     apiKey: "AIzaSyDAEBEf81VD-Mp7WhE6LG3ho6lXod0dBAw",
     authDomain: "apk-web-brzegowy.firebaseapp.com",
+    databaseURL: "https://apk-web-brzegowy-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "apk-web-brzegowy",
     storageBucket: "apk-web-brzegowy.appspot.com",
     messagingSenderId: "783010955517",
