@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Input } from "src/components/common";
 import { ROUTE } from "src/constants";
-import { doSignInWithEmailAndPassword, doSignInWithGoogle } from "src/firebase/auth";
+import { doSignInWithEmailAndPassword, doSignInWithGoogle } from "src/firebase/firebase.auth";
 import { loginSchema } from "src/helpers";
 import { useAuth, useNavigateOnLoggedIn } from "src/hooks";
 
