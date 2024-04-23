@@ -3,43 +3,44 @@ import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { User } from "firebase/auth";
 import { child, get, getDatabase, ref } from "firebase/database";
+import { mapToCommonUserModel } from "src/utils";
+import { TCommonUser } from "src/types/auth";
 import toast from "react-hot-toast";
 
 export type TAuthContextState = {
     isLoggedIn: boolean;
-    currentUser: User | null;
+    currentUser: TCommonUser | null;
     isInitializing: boolean;
-    setCurrentUser: (user: User | null) => void;
+    setCurrentUser: (user: TCommonUser | null) => void;
 };
 
 export const AuthContext = createContext<TAuthContextState>({} as TAuthContextState);
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<TCommonUser | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isInitializing, setIsInitializing] = useState(true);
 
-    const retriveUserFromDb = (userId: string) => {
+    const retriveUserFromDb = (user: User) => {
         const dbRef = ref(getDatabase());
 
-        get(child(dbRef, `users/${userId}`))
+        get(child(dbRef, `users/${user.uid}`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     setCurrentUser(snapshot.val());
                 } else {
-                    console.log("No data available");
-                    toast.error("Failed to login");
+                    setCurrentUser(mapToCommonUserModel(user));
                 }
             })
             .catch((error) => {
                 console.error(error);
-                toast.error("Failed to login");
+                toast.error("Something went wrong during authentication process");
             });
     };
 
     const initializeUser = useCallback((user: User | null) => {
         if (user) {
-            retriveUserFromDb(user.uid);
+            retriveUserFromDb(user);
             setIsLoggedIn(true);
         } else {
             setCurrentUser(null);
@@ -64,5 +65,5 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         isInitializing,
     };
 
-    return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={state}>{isInitializing ? null : children}</AuthContext.Provider>;
 };
