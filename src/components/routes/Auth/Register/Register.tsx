@@ -1,5 +1,6 @@
 import { Form, Formik } from "formik";
 import { FC } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Button, Input } from "src/components/common";
 import { ROUTE } from "src/constants";
@@ -11,7 +12,23 @@ export const Register: FC = () => {
     const { isLoggedIn } = useAuth();
     useNavigateOnLoggedIn(isLoggedIn);
 
-    const registerWithGoogle = () => doSignInWithGoogle();
+    const registerWithGoogle = async () => {
+        try {
+            await doSignInWithGoogle();
+            toast.success("Successfully registered with Google");
+        } catch {
+            toast.success("Failed register with Google");
+        }
+    };
+
+    const registerWithEmail = async (email: string, password: string) => {
+        try {
+            await doCreateUserWithEmailAndPassword(email, password);
+            toast.success("Successfully registered");
+        } catch {
+            toast.success("Failed to register");
+        }
+    };
 
     return (
         <section className="flex justify-center">
@@ -23,7 +40,7 @@ export const Register: FC = () => {
                 <Formik
                     validationSchema={registerSchema}
                     initialValues={{ email: "", password: "", confirmPassword: "" }}
-                    onSubmit={({ email, password }) => doCreateUserWithEmailAndPassword(email, password)}
+                    onSubmit={({ email, password }) => registerWithEmail(email, password)}
                 >
                     <Form className="flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
