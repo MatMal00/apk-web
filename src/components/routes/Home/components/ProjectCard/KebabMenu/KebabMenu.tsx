@@ -18,7 +18,7 @@ export const KebabMenu: FC<IKebabMenuProps> = () => {
                 <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-40 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="absolute right-0  w-40 origin-top-right overflow-hidden rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <button
                         onClick={handleToggleKebabMenu}
                         className="flex w-full items-center justify-between px-4 py-3 text-left text-sm text-gray-700 transition-colors hover:bg-red-900 hover:text-gray-900"
