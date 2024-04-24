@@ -1,28 +1,21 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useHandleClickOutside } from "src/hooks/useHandleClickOutside";
 
 interface IKebabMenuProps {}
 
 export const KebabMenu: FC<IKebabMenuProps> = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const modalRef = useRef<HTMLDivElement | null>(null);
 
     const handleToggleKebabMenu = () => setIsOpen((prev) => !prev);
+
+    const modalRef = useHandleClickOutside<HTMLDivElement>(isOpen, handleToggleKebabMenu);
 
     const handleDeleteProject = () => {
         handleToggleKebabMenu();
         console.log("DELETE");
     };
-
-    const handleClickOutside = useCallback((event: MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(event?.target as Node)) setIsOpen(false);
-    }, []);
-
-    useEffect(() => {
-        if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isOpen, handleClickOutside]);
 
     return (
         <div className="relative">
