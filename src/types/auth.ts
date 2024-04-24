@@ -5,5 +5,6 @@ export type TCommonUser = {
     username: string;
     role: TKeyOfUserRole;
     createdAt: string;
+    uid: string;
     projects?: string[];
 };

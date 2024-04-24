@@ -1,19 +1,37 @@
 import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
+import { useAuth } from "src/hooks";
+import { TProject } from "src/types";
 
 interface IAddProjectFormProps {
     close: () => void;
 }
 
 export const AddProjectForm: FC<IAddProjectFormProps> = ({ close }) => {
+    const { currentUser } = useAuth();
     return (
         <Card className="w-full max-w-lg cursor-default rounded-lg bg-white p-4 shadow-xl">
             <Card.Header className="border-b pb-4">
                 <h3 className="text-2xl font-semibold">Add New Project</h3>
             </Card.Header>
             <Card.Content className="block py-4">
-                <Formik initialValues={{}} onSubmit={() => {}}>
+                <Formik
+                    initialValues={{ name: "", description: "" }}
+                    onSubmit={({ name, description }) => {
+                        if (currentUser) {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            const payload: TProject = {
+                                name,
+                                description,
+                                watchers: [currentUser.uid],
+                                admins: [currentUser.uid],
+                                developers: [],
+                                devops: [],
+                            };
+                        }
+                    }}
+                >
                     <Form className="flex flex-col space-y-4">
                         <Input name="name" label="Project Name" placeholder="Enter the project name" />
                         <TextArea

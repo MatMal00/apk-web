@@ -7,4 +7,5 @@ export const mapToCommonUserModel = (user: User): TCommonUser => ({
     username: user.displayName ?? "",
     email: user.email ?? "",
     role: USER_ROLE.WATCHER,
+    uid: user.uid,
 });

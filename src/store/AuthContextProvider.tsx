@@ -11,7 +11,6 @@ export type TAuthContextState = {
     isLoggedIn: boolean;
     currentUser: TCommonUser | null;
     isInitializing: boolean;
-    setCurrentUser: (user: TCommonUser | null) => void;
 };
 
 export const AuthContext = createContext<TAuthContextState>({} as TAuthContextState);
@@ -61,7 +60,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     const state: TAuthContextState = {
         isLoggedIn,
         currentUser,
-        setCurrentUser,
         isInitializing,
     };
 
