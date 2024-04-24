@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useHandleClickOutside } from "src/hooks/useHandleClickOutside";
@@ -11,11 +11,20 @@ interface IKebabMenuProps {
 export const KebabMenu: FC<IKebabMenuProps> = ({ removeProject, uid }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleToggleKebabMenu = () => setIsOpen((prev) => !prev);
+    const preventDefaultActions = (e?: MouseEvent<HTMLButtonElement>) => {
+        e?.stopPropagation();
+        e?.preventDefault();
+    };
+
+    const handleToggleKebabMenu = (e?: MouseEvent<HTMLButtonElement>) => {
+        preventDefaultActions(e);
+        setIsOpen((prev) => !prev);
+    };
 
     const modalRef = useHandleClickOutside<HTMLDivElement>(isOpen, handleToggleKebabMenu);
 
-    const handleDeleteProject = () => {
+    const handleDeleteProject = (e: MouseEvent<HTMLButtonElement>) => {
+        preventDefaultActions(e);
         handleToggleKebabMenu();
         removeProject(uid);
     };
