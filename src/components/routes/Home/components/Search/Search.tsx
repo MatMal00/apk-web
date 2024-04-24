@@ -4,10 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Input, Modal } from "src/components/common";
 import { Form, Formik } from "formik";
 import { AddProjectForm } from "./AddProjectForm";
+import { TProject } from "src/types";
 
-interface ISearchProps {}
+interface ISearchProps {
+    addNewProject: (newProject: Omit<TProject, "uid">) => Promise<void>;
+}
 
-export const Search: FC<ISearchProps> = () => {
+export const Search: FC<ISearchProps> = ({ addNewProject }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
@@ -27,7 +30,7 @@ export const Search: FC<ISearchProps> = () => {
                 </Form>
             </Formik>
             <Modal isOpen={isModalOpen} close={handleToggleModal}>
-                <AddProjectForm close={handleToggleModal} />
+                <AddProjectForm close={handleToggleModal} addNewProject={addNewProject} />
             </Modal>
         </>
     );

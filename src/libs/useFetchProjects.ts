@@ -1,37 +1,37 @@
 import { useCallback } from "react";
+import { addNewProjectAction, fetchProjectsAction, removeProjectAction } from "src/actions";
+import { TProject } from "src/types";
 import useSWRImmutable from "swr/immutable";
-import { addPhotoToAlbumAction, fetcher, removePhotoFromAlbumAction } from "src/actions";
-import { IPhoto } from "src/types";
 import toast from "react-hot-toast";
 
-export const useFetchProjects = (albumId?: string) => {
-    const { data, error, isLoading, mutate } = useSWRImmutable<IPhoto[], string>(`/photos?albumId=${albumId}`, fetcher);
+export const useFetchProjects = () => {
+    const { data, error, isLoading, mutate } = useSWRImmutable<TProject[], string>(`/projects`, fetchProjectsAction);
 
-    const addPhotoToAlbum = useCallback(
-        async (newPhoto: IPhoto) => {
+    const addNewProject = useCallback(
+        async (newProject: Omit<TProject, "uid">) => {
             try {
-                await mutate((photos) => addPhotoToAlbumAction(newPhoto, photos, albumId), {
-                    optimisticData: (photos) => [newPhoto, ...(photos ?? [])],
+                await mutate((projects) => addNewProjectAction(newProject, projects), {
+                    optimisticData: (projects) => projects ?? [],
                     populateCache: true,
                     revalidate: false,
                 });
-                toast.success("Successfully added the pnew project");
+                toast.success("Successfully added new project");
             } catch {
-                toast.error("Failed to add photo");
+                toast.error("Failed to add new project");
             }
         },
-        [albumId, mutate]
+        [mutate]
     );
 
-    const removePhotoFromAlbum = useCallback(
-        async (photoId: number) => {
+    const removeProject = useCallback(
+        async (projectUid: string) => {
             try {
-                await mutate((photos) => removePhotoFromAlbumAction(photoId, photos), {
-                    optimisticData: (photos) => (photos ?? []).filter((photo) => photo.id !== photoId),
+                await mutate((projects) => removeProjectAction(projectUid, projects), {
+                    optimisticData: (projects) => (projects ?? []).filter((project) => project.uid !== projectUid),
                     populateCache: true,
                     revalidate: false,
                 });
-                toast.success("Successfully removed the photo");
+                toast.success("Successfully removed project");
             } catch {
                 toast.error("Failed to removed photo");
             }
@@ -39,5 +39,5 @@ export const useFetchProjects = (albumId?: string) => {
         [mutate]
     );
 
-    return { data, error, isLoading, addPhotoToAlbum, removePhotoFromAlbum };
+    return { data, error, isLoading, addNewProject, removeProject };
 };

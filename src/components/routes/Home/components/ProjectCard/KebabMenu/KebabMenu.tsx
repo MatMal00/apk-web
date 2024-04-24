@@ -3,9 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useHandleClickOutside } from "src/hooks/useHandleClickOutside";
 
-interface IKebabMenuProps {}
+interface IKebabMenuProps {
+    removeProject: (projectUid: string) => Promise<void>;
+    uid: string;
+}
 
-export const KebabMenu: FC<IKebabMenuProps> = () => {
+export const KebabMenu: FC<IKebabMenuProps> = ({ removeProject, uid }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleToggleKebabMenu = () => setIsOpen((prev) => !prev);
@@ -14,7 +17,7 @@ export const KebabMenu: FC<IKebabMenuProps> = () => {
 
     const handleDeleteProject = () => {
         handleToggleKebabMenu();
-        console.log("DELETE");
+        removeProject(uid);
     };
 
     return (

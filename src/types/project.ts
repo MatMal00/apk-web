@@ -7,4 +7,5 @@ export type TProject = {
     developers: string[];
     devops: string[];
     createdAt: string;
+    uid: string;
 };
