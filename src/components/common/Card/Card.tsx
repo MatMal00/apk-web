@@ -1,18 +1,22 @@
-import { FC, ReactNode } from "react";
-import { CardContent, CardHeader } from "./components";
+import { FC, HTMLProps, ReactNode } from "react";
+import { CardContent, CardFooter, CardHeader } from "./components";
+import { twMerge } from "tailwind-merge";
 
 interface ICardProps {
     children: ReactNode | ReactNode[];
+    className?: HTMLProps<HTMLElement>["className"];
 }
 
 interface ICardElement extends FC<ICardProps> {
     Header: typeof CardHeader;
     Content: typeof CardContent;
+    Footer: typeof CardFooter;
 }
 
-export const Card: ICardElement = ({ children }) => {
-    return <div className="cursor-pointer rounded-lg border bg-white shadow-sm">{children}</div>;
+export const Card: ICardElement = ({ children, className }) => {
+    return <div className={twMerge("cursor-pointer rounded-lg border bg-white shadow-sm", className)}>{children}</div>;
 };
 
 Card.Header = CardHeader;
 Card.Content = CardContent;
+Card.Footer = CardFooter;
