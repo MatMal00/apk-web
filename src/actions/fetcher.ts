@@ -1,15 +1,14 @@
+import { child, get, getDatabase, ref } from "firebase/database";
 import toast from "react-hot-toast";
-import api from "src/api";
-import { apiErrorHandler, httpStatus } from "src/helpers";
+import { apiErrorHandler } from "src/helpers";
 
-export const fetcher = async <T>(url: string) => {
+export const fetcher = async <T>(url: string): Promise<T> => {
     try {
-        const response = await api().get<T>(url);
+        const dbRef = ref(getDatabase());
+        const response = await get(child(dbRef, url));
 
-        const status = httpStatus(response.status);
-        if (status !== "success") throw response;
-
-        return response.data;
+        if (!response.exists()) throw response;
+        return response.val();
     } catch (error) {
         const errorMessage = apiErrorHandler(error);
         toast.error(errorMessage);
