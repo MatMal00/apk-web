@@ -4,15 +4,15 @@ import { Header, ProjectCard, Search } from "./components";
 import { useFetchProjects } from "src/libs/useFetchProjects";
 
 export const Home: FC = () => {
-    const { data: projects, addNewProject, removeProject } = useFetchProjects();
+    const { userProjects, addNewProject, removeProject } = useFetchProjects();
 
-    if (!projects) return null;
+    if (!userProjects) return null;
     return (
         <section className="grid gap-6">
             <Header />
             <Search addNewProject={addNewProject} />
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {projects.map((project, key) => (
+                {userProjects.map((project, key) => (
                     <Link key={key} to={"/"}>
                         <ProjectCard project={project} removeProject={removeProject} />
                     </Link>

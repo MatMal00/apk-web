@@ -1,16 +1,25 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { addNewProjectAction, fetchProjectsAction, removeProjectAction } from "src/actions";
 import { TProject } from "src/types";
 import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
+import { useAuth } from "src/hooks";
 
 export const useFetchProjects = () => {
+    const { currentUser } = useAuth();
     const { data, error, isLoading, mutate } = useSWRImmutable<TProject[], string>(`/projects`, fetchProjectsAction);
+
+    const userProjects = useMemo(
+        () => data?.filter((project) => currentUser?.projects?.includes(project.uid)),
+        [currentUser?.projects, data]
+    );
 
     const addNewProject = useCallback(
         async (newProject: Omit<TProject, "uid">) => {
             try {
-                await mutate((projects) => addNewProjectAction(newProject, projects), {
+                if (!currentUser) return;
+
+                await mutate((projects) => addNewProjectAction(newProject, currentUser, projects), {
                     optimisticData: (projects) => projects ?? [],
                     populateCache: true,
                     revalidate: false,
@@ -20,13 +29,15 @@ export const useFetchProjects = () => {
                 toast.error("Failed to add new project");
             }
         },
-        [mutate]
+        [currentUser, mutate]
     );
 
     const removeProject = useCallback(
         async (projectUid: string) => {
             try {
-                await mutate((projects) => removeProjectAction(projectUid, projects), {
+                if (!currentUser) return;
+
+                await mutate((projects) => removeProjectAction(projectUid, currentUser, projects), {
                     optimisticData: (projects) => (projects ?? []).filter((project) => project.uid !== projectUid),
                     populateCache: true,
                     revalidate: false,
@@ -36,8 +47,8 @@ export const useFetchProjects = () => {
                 toast.error("Failed to removed photo");
             }
         },
-        [mutate]
+        [currentUser, mutate]
     );
 
-    return { data, error, isLoading, addNewProject, removeProject };
+    return { projects: data, userProjects, error, isLoading, addNewProject, removeProject };
 };

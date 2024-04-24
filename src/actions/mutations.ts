@@ -1,4 +1,4 @@
-import { child, push, ref, remove, update } from "firebase/database";
+import { push, ref, remove, update } from "firebase/database";
 import { database } from "src/firebase";
 
 export const postRequest = async (url: string, data: object) => {
@@ -12,6 +12,5 @@ export const deleteRequest = async (url: string) => {
 };
 
 export const updateRequest = async (url: string, data: object) => {
-    const newPostKey = push(child(ref(database), url)).key;
-    return await update(ref(database), { [`${url}/` + newPostKey]: data });
+    return await update(ref(database), { [url]: data });
 };
