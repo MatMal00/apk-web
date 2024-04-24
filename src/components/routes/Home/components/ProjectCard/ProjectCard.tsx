@@ -1,7 +1,6 @@
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
 import { Card } from "src/components/common";
+import { KebabMenu } from "./KebabMenu";
 
 interface IProjectCardProps {}
 
@@ -28,9 +27,7 @@ export const ProjectCard: FC<IProjectCardProps> = () => {
                 <div className="text-sm text-gray-500 dark:text-gray-400" data-id="24">
                     Created 1 week ago
                 </div>
-                <button className="rounded-lg px-3.5 py-1 transition-colors hover:bg-gray-100" data-id="25">
-                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                </button>
+                <KebabMenu />
             </Card.Content>
         </Card>
     );
