@@ -7,12 +7,15 @@ import ReactTimeAgo from "react-time-ago";
 interface IProjectCardProps {
     project: TProject;
     removeProject: (projectUid: string) => Promise<void>;
+    userUid: string;
 }
 
 export const ProjectCard: FC<IProjectCardProps> = ({
-    project: { name, description, logoUrl, createdAt, uid },
+    project: { name, description, logoUrl, createdAt, uid, admins },
     removeProject,
+    userUid,
 }) => {
+    const isAllowedToRemove = admins.includes(userUid);
     return (
         <Card>
             <Card.Header>
@@ -31,7 +34,7 @@ export const ProjectCard: FC<IProjectCardProps> = ({
                 <div className="text-sm text-gray-500 dark:text-gray-400" data-id="24">
                     Created <ReactTimeAgo date={new Date(createdAt)} locale="en-US" />
                 </div>
-                <KebabMenu removeProject={removeProject} uid={uid} />
+                {isAllowedToRemove && <KebabMenu removeProject={removeProject} uid={uid} />}
             </Card.Content>
         </Card>
     );
