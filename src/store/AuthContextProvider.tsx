@@ -11,18 +11,20 @@ export type TAuthContextState = {
     isLoggedIn: boolean;
     currentUser: TCommonUser | null;
     isInitializing: boolean;
+    updateUserData: () => void;
 };
 
 export const AuthContext = createContext<TAuthContextState>({} as TAuthContextState);
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<TCommonUser | null>(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isInitializing, setIsInitializing] = useState(true);
+    const [isFetchingUser, setIsFetchingUser] = useState(true);
 
     const retriveUserFromDb = (user: User) => {
         const dbRef = ref(getDatabase());
 
+        setIsFetchingUser(true);
         get(child(dbRef, `users/${user.uid}`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -34,20 +36,32 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
             .catch((error) => {
                 console.error(error);
                 toast.error("Something went wrong during authentication process");
-            });
+            })
+            .finally(() => setIsFetchingUser(false));
     };
 
     const initializeUser = useCallback((user: User | null) => {
         if (user) {
             retriveUserFromDb(user);
-            setIsLoggedIn(true);
         } else {
             setCurrentUser(null);
-            setIsLoggedIn(false);
         }
 
         setIsInitializing(false);
     }, []);
+
+    const updateUserData = useCallback(() => {
+        if (currentUser) {
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `users/${currentUser.uid}`))
+                .then((snapshot) => {
+                    if (snapshot.exists()) setCurrentUser(snapshot.val());
+                })
+                .catch(() => {
+                    toast.error("Failed to revalidate user data");
+                });
+        }
+    }, [currentUser]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, initializeUser);
@@ -58,10 +72,13 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     }, [initializeUser]);
 
     const state: TAuthContextState = {
-        isLoggedIn,
+        isLoggedIn: !!currentUser,
         currentUser,
         isInitializing,
+        updateUserData,
     };
 
-    return <AuthContext.Provider value={state}>{isInitializing ? null : children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={state}>{isInitializing || isFetchingUser ? null : children}</AuthContext.Provider>
+    );
 };

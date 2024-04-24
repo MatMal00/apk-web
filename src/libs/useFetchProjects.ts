@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { addNewProjectAction, fetchProjectsAction, removeProjectAction } from "src/actions";
 import { TProject } from "src/types";
+import { useAuth } from "src/hooks";
 import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
-import { useAuth } from "src/hooks";
 
 export const useFetchProjects = () => {
-    const { currentUser } = useAuth();
+    const { currentUser, updateUserData } = useAuth();
     const { data, error, isLoading, mutate } = useSWRImmutable<TProject[], string>(`/projects`, fetchProjectsAction);
 
     const userProjects = useMemo(
@@ -24,12 +24,13 @@ export const useFetchProjects = () => {
                     populateCache: true,
                     revalidate: false,
                 });
+                updateUserData();
                 toast.success("Successfully added new project");
             } catch {
                 toast.error("Failed to add new project");
             }
         },
-        [currentUser, mutate]
+        [currentUser, mutate, updateUserData]
     );
 
     const removeProject = useCallback(
@@ -42,12 +43,13 @@ export const useFetchProjects = () => {
                     populateCache: true,
                     revalidate: false,
                 });
+                updateUserData();
                 toast.success("Successfully removed project");
             } catch {
                 toast.error("Failed to removed photo");
             }
         },
-        [currentUser, mutate]
+        [currentUser, mutate, updateUserData]
     );
 
     return { projects: data, userProjects, error, isLoading, addNewProject, removeProject };
