@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Header, ProjectCard, Search } from "./components";
 import { useFetchProjects } from "src/libs/useFetchProjects";
+import { ROUTE } from "src/constants";
 
 export const Home: FC = () => {
     const { userProjects, addNewProject, removeProject } = useFetchProjects();
@@ -23,7 +24,7 @@ export const Home: FC = () => {
             <Search addNewProject={addNewProject} />
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {filteredProjects.map((project, key) => (
-                    <Link key={key} to={"/"}>
+                    <Link key={key} to={`${ROUTE.BOARD}/${project.uid}`}>
                         <ProjectCard project={project} removeProject={removeProject} />
                     </Link>
                 ))}
