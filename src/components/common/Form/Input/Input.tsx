@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent, InputHTMLAttributes, forwardRef, useEffect, useRef } from "react";
+import React, { ChangeEvent, FocusEvent, HTMLProps, InputHTMLAttributes, forwardRef, useEffect, useRef } from "react";
 import { useField } from "formik";
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "onBlur" | "onChange">;
@@ -11,6 +11,7 @@ export interface IInputProps extends HTMLInputProps {
     ref?: React.Ref<HTMLInputElement>;
     disabled?: boolean;
     focusOnInit?: boolean;
+    containerClassName?: HTMLProps<HTMLElement>["className"];
 }
 
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
@@ -22,6 +23,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             type = "text",
             disabled,
             focusOnInit, // It works only if a custom ref has not been passed
+            containerClassName,
             ...props
         }: IInputProps,
         ref
@@ -46,16 +48,18 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
         }, [focusOnInit]);
 
         return (
-            <div>
+            <div className={containerClassName}>
                 <div>
-                    <div className="space-y-2 pb-2">
-                        <label
-                            htmlFor={field.name}
-                            className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            {label}
-                        </label>
-                    </div>
+                    {!!label?.length && (
+                        <div className="space-y-2 pb-2">
+                            <label
+                                htmlFor={field.name}
+                                className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                {label}
+                            </label>
+                        </div>
+                    )}
                     <input
                         {...field}
                         {...props}
