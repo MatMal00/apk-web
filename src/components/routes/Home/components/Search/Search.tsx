@@ -10,6 +10,7 @@ export const Search: FC<ISearchProps> = () => {
         <div className="flex items-center justify-between gap-6">
             <Input name="search" placeholder="Search projects..." containerClassName="basis-80" />
             <Button
+                type="button"
                 className="aspect-square w-10 rounded-full shadow-md"
                 icon={<FontAwesomeIcon icon={faPlus} style={{ color: "#ffffff" }} />}
             />
