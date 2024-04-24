@@ -16,3 +16,9 @@ export const registerSchema: Yup.Schema<{ email: string; password: string; confi
         .oneOf([Yup.ref("password")], "Passwords must match")
         .required("Confirm password is required"),
 }).defined();
+
+export const createProject = Yup.object().shape({
+    logoUrl: Yup.string().required("Logo url is required"),
+    name: Yup.string().required("Project name is required"),
+    description: Yup.string().required("Project description is required"),
+});

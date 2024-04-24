@@ -1,13 +1,11 @@
-import api from "src/api";
+import { push, ref } from "firebase/database";
+import { database } from "src/firebase";
 import { httpStatus } from "src/helpers";
+import api from "src/api";
 
-export const postRequest = async <T>(url: string, data: object) => {
-    const response = await api().post<T>(url, { data });
-
-    const status = httpStatus(response.status);
-    if (status !== "success") throw response;
-
-    return response.data;
+export const postRequest = async (url: string, data: object) => {
+    const response = await push(ref(database, url), data);
+    return response.key;
 };
 
 export const deleteRequest = async <T>(url: string) => {
