@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useParams } from "react-router-dom";
-import { Column, Search, Task } from "./components";
+import { TasksList } from "./TasksList";
+import { StoriesList } from "./StoriesList";
 
 interface IBoardProps {}
 
@@ -8,28 +9,10 @@ export const Board: FC<IBoardProps> = () => {
     const { projectUid } = useParams<{ projectUid: string }>();
     console.log(projectUid);
     return (
-        <div className="flex h-screen w-full flex-col gap-6">
-            <Search addNewProject={() => Promise.resolve()} />
-            <div className="grid grid-cols-3 gap-6">
-                <Column title="To Do">
-                    <Task />
-                    <Task />
-                    <Task />
-                    <Task />
-                </Column>
-                <Column title="Doing">
-                    <Task />
-                    <Task />
-                    <Task />
-                    <Task />
-                </Column>
-                <Column title="Done">
-                    <Task />
-                    <Task />
-                    <Task />
-                    <Task />
-                </Column>
-                {/* <div className="rounded-lg bg-gray-100 p-4 shadow dark:bg-gray-800">
+        <div className="flex w-full flex-col gap-6">
+            <TasksList />
+            <StoriesList />
+            {/* <div className="rounded-lg bg-gray-100 p-4 shadow dark:bg-gray-800">
                     <h2 className="mb-4 text-lg font-semibold">Doing</h2>
                     <div className="space-y-4">
                         <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-700">
@@ -56,7 +39,7 @@ export const Board: FC<IBoardProps> = () => {
                         </div>
                     </div>
                 </div> */}
-                {/* <div className="rounded-lg bg-gray-100 p-4 shadow dark:bg-gray-800">
+            {/* <div className="rounded-lg bg-gray-100 p-4 shadow dark:bg-gray-800">
                     <h2 className="mb-4 text-lg font-semibold">Done</h2>
                     <div className="space-y-4">
                         <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-700">
@@ -83,7 +66,6 @@ export const Board: FC<IBoardProps> = () => {
                         </div>
                     </div> 
                 </div>*/}
-            </div>
         </div>
     );
 };

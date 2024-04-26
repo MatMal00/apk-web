@@ -3,7 +3,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Input, Modal } from "src/components/common";
 import { Form, Formik } from "formik";
-import { AddProjectForm } from "./AddProjectForm";
+import { AddProjectForm } from "./AddTaskForm";
 import { TProject } from "src/types";
 import { useSearchParams } from "react-router-dom";
 
