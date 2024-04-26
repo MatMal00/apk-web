@@ -6,7 +6,7 @@ interface IHeaderProps {}
 
 export const Header: FC<IHeaderProps> = () => {
     return (
-        <header className="flex h-16 items-center justify-between border-b bg-gray-900 px-4 text-white md:px-6">
+        <header className="mb-6 flex h-16 items-center justify-between border-b bg-gray-900 px-4 text-white md:px-6">
             <p className="flex items-center gap-2 text-lg font-semibold">
                 <span>Task Manager</span>
             </p>

@@ -8,7 +8,7 @@ export const Board: FC<IBoardProps> = () => {
     const { projectUid } = useParams<{ projectUid: string }>();
     console.log(projectUid);
     return (
-        <div className="mt-6 flex h-screen w-full flex-col gap-6">
+        <div className="flex h-screen w-full flex-col gap-6">
             <Search addNewProject={() => Promise.resolve()} />
             <div className="grid grid-cols-3 gap-6">
                 <Column title="To Do">
