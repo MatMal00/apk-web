@@ -7,7 +7,7 @@ export const Footer: FC<IFooterProps> = () => {
 
     return (
         <footer className="border-t border-gray-200 bg-gray-200 py-4 text-center dark:border-gray-800">
-            © {currentYear} apk web. All rights reserved.
+            © {currentYear} Task Manager. All rights reserved.
         </footer>
     );
 };
