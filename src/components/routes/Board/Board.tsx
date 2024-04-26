@@ -2,12 +2,15 @@ import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { TasksList } from "./TasksList";
 import { StoriesList } from "./StoriesList";
+import { useFetchProject } from "src/libs/useFetchProject";
 
 interface IBoardProps {}
 
 export const Board: FC<IBoardProps> = () => {
-    const { projectUid } = useParams<{ projectUid: string }>();
-    console.log(projectUid);
+    const { projectUid = "" } = useParams<{ projectUid: string }>();
+    const { project } = useFetchProject(projectUid);
+    console.log(project);
+
     return (
         <div className="flex w-full flex-col gap-6">
             <TasksList />

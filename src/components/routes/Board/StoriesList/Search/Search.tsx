@@ -3,7 +3,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Input, Modal } from "src/components/common";
 import { Form, Formik } from "formik";
-import { AddProjectForm } from "./AddTaskForm";
+import { AddStoryForm } from "./AddStoryForm";
 import { TProject } from "src/types";
 import { useSearchParams } from "react-router-dom";
 
@@ -42,7 +42,7 @@ export const Search: FC<ISearchProps> = ({ addNewProject }) => {
                 </Form>
             </Formik>
             <Modal isOpen={isModalOpen} close={handleToggleModal}>
-                <AddProjectForm close={handleToggleModal} addNewProject={addNewProject} />
+                <AddStoryForm close={handleToggleModal} addNewProject={addNewProject} />
             </Modal>
         </>
     );

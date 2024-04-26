@@ -24,6 +24,7 @@ export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject 
                 developers: [],
                 devops: [],
                 createdAt: new Date().toJSON(),
+                stories: [],
             };
 
             addNewProject(payload);

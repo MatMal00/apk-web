@@ -5,12 +5,12 @@ import { useAuth } from "src/hooks";
 import { TProject } from "src/types";
 import { createProject } from "src/helpers";
 
-interface IAddProjectFormProps {
+interface IAddStoryFormProps {
     close: () => void;
     addNewProject: (newProject: Omit<TProject, "uid">) => Promise<void>;
 }
 
-export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject }) => {
+export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewProject }) => {
     const { currentUser } = useAuth();
 
     const handleAddNewProject = (name: string, description: string, logoUrl: string) => {
@@ -24,6 +24,7 @@ export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject 
                 developers: [],
                 devops: [],
                 createdAt: new Date().toJSON(),
+                stories: [],
             };
 
             addNewProject(payload);

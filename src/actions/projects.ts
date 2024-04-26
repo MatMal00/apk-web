@@ -13,6 +13,16 @@ export const fetchProjectsAction = async (): Promise<TProject[]> => {
     }
 };
 
+export const fetchProjectAction = async (projectUid: string): Promise<TProject | undefined> => {
+    try {
+        const project = await fetcher<TProject>(`/projects/${projectUid}`);
+        return project;
+    } catch (error) {
+        console.error({ error });
+        return undefined;
+    }
+};
+
 export const fetchUserProjectsAction = async (): Promise<TProject[]> => {
     try {
         const response = await fetcher<{ [key: string]: TProject }>("/projects");
