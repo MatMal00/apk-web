@@ -1,34 +1,28 @@
 import { useCallback } from "react";
-import { addNewStoryAction, fetchStoriesAction } from "src/actions";
-import { TStory } from "src/types";
-import { useAuth } from "src/hooks";
-import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
+import { addNewTaskAction, fetchTasksAction } from "src/actions";
+import { TTask } from "src/types";
+import useSWRImmutable from "swr/immutable";
 
-export const useFetchStories = (projectUid: string) => {
-    const { currentUser, updateUserData } = useAuth();
-    const { data, error, isLoading, mutate } = useSWRImmutable<TStory[], string>(
-        `/projects/${projectUid}/stories`,
-        fetchStoriesAction
+export const useFetchTasks = (projectUid: string) => {
+    const { data, error, isLoading, mutate } = useSWRImmutable<TTask[], string>(`/projects/${projectUid}/tasks`, () =>
+        fetchTasksAction(projectUid)
     );
 
-    const addNewStory = useCallback(
-        async (newStory: Omit<TStory, "uid">) => {
+    const addNewTask = useCallback(
+        async (newStory: Omit<TTask, "uid">) => {
             try {
-                if (!currentUser) return;
-
-                await mutate((projects) => addNewStoryAction(newStory, projectUid, projects), {
-                    optimisticData: (projects) => projects ?? [],
+                await mutate((tasks) => addNewTaskAction(newStory, projectUid, tasks), {
+                    optimisticData: (tasks) => tasks ?? [],
                     populateCache: true,
                     revalidate: false,
                 });
-                updateUserData();
-                toast.success("Successfully added new story");
+                toast.success("Successfully added new task");
             } catch {
-                toast.error("Failed to add new story");
+                toast.error("Failed to add new task");
             }
         },
-        [currentUser, mutate, projectUid, updateUserData]
+        [mutate, projectUid]
     );
 
     // const removeProject = useCallback(
@@ -50,5 +44,5 @@ export const useFetchStories = (projectUid: string) => {
     //     [currentUser, mutate, updateUserData]
     // );
 
-    return { stories: data, error, isLoading, addNewStory };
+    return { tasks: data, error, isLoading, addNewTask };
 };

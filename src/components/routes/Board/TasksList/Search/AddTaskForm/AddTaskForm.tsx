@@ -2,31 +2,36 @@ import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { useAuth } from "src/hooks";
-import { TProject } from "src/types";
+import { TTask } from "src/types";
 import { createProject } from "src/helpers";
 
-interface IAddProjectFormProps {
+interface IAddTaskFormProps {
     close: () => void;
-    addNewProject: (newProject: Omit<TProject, "uid">) => Promise<void>;
+    addNewTask: (newTask: Omit<TTask, "uid">) => Promise<void>;
 }
 
-export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject }) => {
+export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask }) => {
     const { currentUser } = useAuth();
 
-    const handleAddNewProject = (name: string, description: string, logoUrl: string) => {
+    const handleAddNewTask = () => {
         if (currentUser) {
-            const payload: Omit<TProject, "uid"> = {
-                name,
-                description,
-                logoUrl,
-                watchers: [currentUser.uid],
-                admins: [currentUser.uid],
-                developers: [],
-                devops: [],
-                createdAt: new Date().toJSON(),
+            const payload: Omit<TTask, "uid"> = {
+                name: "Integrate Payment Gateway",
+                description:
+                    "Implement and configure the secure payment gateway integration for the e-commerce platform.",
+                priority: "medium",
+                storyUid: "-NwQnr6gKTvdgxXcszv7",
+                estimatedExecutionTime: 40, // hours
+                status: "todo",
+                dateAdded: new Date(),
+                assignedUser: {
+                    id: "98zyx-54vu-321t-srqp-onml",
+                    name: "Samantha Reed",
+                    role: "DEV",
+                },
             };
 
-            addNewProject(payload);
+            addNewTask(payload);
             close();
         }
     };
@@ -45,7 +50,7 @@ export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject 
                     logoUrl:
                         "https://img.freepik.com/free-photo/light-bulb-with-drawing-graph_1232-2105.jpg?size=626&ext=jpg",
                 }}
-                onSubmit={({ name, description, logoUrl }) => handleAddNewProject(name, description, logoUrl)}
+                onSubmit={() => handleAddNewTask()}
             >
                 <Form>
                     <Card.Content className="block py-4">

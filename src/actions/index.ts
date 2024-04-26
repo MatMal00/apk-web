@@ -6,3 +6,4 @@ export * from "./posts";
 export * from "./comments";
 export * from "./projects";
 export * from "./stories";
+export * from "./tasks";

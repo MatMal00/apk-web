@@ -36,7 +36,7 @@ export type TTask = {
     name: string;
     description: string;
     priority: "low" | "medium" | "high";
-    storyId: string; // Assuming 'story' refers to a link or identifier for related project story or feature
+    storyUid: string; // Assuming 'story' refers to a link or identifier for related project story or feature
     estimatedExecutionTime: number; // In hours
     status: "todo" | "doing" | "done";
     dateAdded: Date;
