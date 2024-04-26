@@ -2,7 +2,9 @@ import { FC } from "react";
 import { Column, Task } from "../components";
 import { Search } from "./Search";
 
-interface ITasksListProps {}
+interface ITasksListProps {
+    projectUid: string;
+}
 
 export const TasksList: FC<ITasksListProps> = () => {
     return (

@@ -3,9 +3,9 @@ import { deleteRequest, postRequest, updateRequest } from "./mutations";
 import { fetcher } from "./fetcher";
 import { mapToCommonResponseModel } from "src/utils";
 
-export const fetchProjectsAction = async (): Promise<TProject[]> => {
+export const fetchProjectsAction = async (url: string): Promise<TProject[]> => {
     try {
-        const response = await fetcher<{ [key: string]: TProject }>("/projects");
+        const response = await fetcher<{ [key: string]: TProject }>(url);
         return mapToCommonResponseModel<TProject>(response);
     } catch (error) {
         console.error({ error });

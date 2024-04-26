@@ -2,32 +2,36 @@ import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { useAuth } from "src/hooks";
-import { TProject } from "src/types";
+import { TStory } from "src/types";
 import { createProject } from "src/helpers";
 
 interface IAddStoryFormProps {
     close: () => void;
-    addNewProject: (newProject: Omit<TProject, "uid">) => Promise<void>;
+    addNewStory: (newStory: Omit<TStory, "uid">) => Promise<void>;
 }
 
-export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewProject }) => {
+export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewStory }) => {
     const { currentUser } = useAuth();
 
-    const handleAddNewProject = (name: string, description: string, logoUrl: string) => {
+    const handleAddNewProject = () => {
         if (currentUser) {
-            const payload: Omit<TProject, "uid"> = {
-                name,
-                description,
-                logoUrl,
-                watchers: [currentUser.uid],
-                admins: [currentUser.uid],
-                developers: [],
-                devops: [],
-                createdAt: new Date().toJSON(),
-                stories: [],
+            const payload: Omit<TStory, "uid"> = {
+                name: "Ultrasonic Drill Rig",
+                description:
+                    "This advanced drill rig offers high-efficiency and precision for complex geological surveys.",
+                priority: "high",
+                estimatedCompletionTime: 72, // hours
+                status: "doing",
+                dateAdded: new Date(),
+                assignedUser: {
+                    id: currentUser.uid,
+                    name: currentUser.username,
+                    role: currentUser.role,
+                },
+                tasks: [],
             };
 
-            addNewProject(payload);
+            addNewStory(payload);
             close();
         }
     };
@@ -46,7 +50,7 @@ export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewProject }) =
                     logoUrl:
                         "https://img.freepik.com/free-photo/light-bulb-with-drawing-graph_1232-2105.jpg?size=626&ext=jpg",
                 }}
-                onSubmit={({ name, description, logoUrl }) => handleAddNewProject(name, description, logoUrl)}
+                onSubmit={() => handleAddNewProject()}
             >
                 <Form>
                     <Card.Content className="block py-4">

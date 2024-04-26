@@ -13,7 +13,8 @@ export type TProject = {
     stories: TStory[]; // List of stories associated with the project
 };
 
-type TStory = {
+export type TStory = {
+    uid: string;
     name: string;
     description: string;
     priority: "low" | "medium" | "high";
@@ -30,7 +31,8 @@ type TStory = {
     tasks: TTask[]; // List of tasks associated with the story
 };
 
-type TTask = {
+export type TTask = {
+    uid: string;
     name: string;
     description: string;
     priority: "low" | "medium" | "high";

@@ -14,13 +14,13 @@ interface ISearchProps {
 export const Search: FC<ISearchProps> = ({ addNewProject }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const search = searchParams.get("search") ?? "";
+    const search = searchParams.get("searchTasks") ?? "";
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
 
     const handleSearchProject = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setSearchParams(value.length ? { search: value } : undefined);
+        setSearchParams(value.length ? { ...searchParams, searchTasks: value } : undefined);
     };
 
     return (

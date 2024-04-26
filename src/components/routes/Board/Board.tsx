@@ -13,8 +13,8 @@ export const Board: FC<IBoardProps> = () => {
 
     return (
         <div className="flex w-full flex-col gap-6">
-            <TasksList />
-            <StoriesList />
+            <TasksList projectUid={projectUid} />
+            <StoriesList projectUid={projectUid} />
             {/* <div className="rounded-lg bg-gray-100 p-4 shadow dark:bg-gray-800">
                     <h2 className="mb-4 text-lg font-semibold">Doing</h2>
                     <div className="space-y-4">
