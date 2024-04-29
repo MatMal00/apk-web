@@ -1,31 +1,29 @@
 import { FC } from "react";
-import { Column, Task } from "../components";
 import { useFetchStories } from "src/libs";
-import { Search } from "./Search";
+import { Search, Story } from "./components";
+import { Column } from "../components";
+import { TASK_STATUS } from "src/constants";
 
 interface IStoriesListProps {
     projectUid: string;
 }
 
 export const StoriesList: FC<IStoriesListProps> = ({ projectUid }) => {
-    const { stories, addNewStory } = useFetchStories(projectUid);
-    console.log(stories);
+    const { groupedStories, addNewStory } = useFetchStories(projectUid);
+
     return (
         <div className="flex flex-col gap-6">
             <h2 className="text-4xl font-bold">Stories</h2>
             <Search addNewStory={addNewStory} />
             <div className="grid grid-cols-3 gap-6">
                 <Column title="To Do">
-                    <Task />
-                    <Task />
+                    {groupedStories?.[TASK_STATUS.TO_DO].map((story) => <Story key={story.uid} story={story} />)}
                 </Column>
                 <Column title="Doing">
-                    <Task />
-                    <Task />
+                    {groupedStories?.[TASK_STATUS.DOING].map((story) => <Story key={story.uid} story={story} />)}
                 </Column>
                 <Column title="Done">
-                    <Task />
-                    <Task />
+                    {groupedStories?.[TASK_STATUS.DONE].map((story) => <Story key={story.uid} story={story} />)}
                 </Column>
             </div>
         </div>

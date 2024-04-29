@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { addNewStoryAction, fetchStoriesAction } from "src/actions";
 import { TStory } from "src/types";
 import { useAuth } from "src/hooks";
+import { TTaskStatus } from "src/constants";
 import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
 
@@ -50,5 +51,13 @@ export const useFetchStories = (projectUid: string) => {
     //     [currentUser, mutate, updateUserData]
     // );
 
-    return { stories: data, error, isLoading, addNewStory };
+    const groupedStories = data?.reduce(
+        (acc, story) => {
+            acc[story.status].push(story);
+            return acc;
+        },
+        { todo: [], doing: [], done: [] } as Record<TTaskStatus, TStory[]>
+    );
+
+    return { stories: data, groupedStories, error, isLoading, addNewStory };
 };

@@ -1,15 +1,22 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
+import { Modal } from "src/components/common";
+import { TStory, TTask } from "src/types";
 
-interface ITaskProps {}
+interface ITaskProps {
+    modalContent: ReactNode | ReactNode[];
+    toggleModal: () => void;
+    isModalOpen: boolean;
+    task: TStory | TTask;
+}
 
-export const Task: FC<ITaskProps> = () => {
+export const Task: FC<ITaskProps> = ({ modalContent, toggleModal, isModalOpen, task: { name, description } }) => {
     return (
-        <div className="space-y-4">
+        <li className="cursor-pointer space-y-4" onClick={toggleModal}>
             <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-700">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h3 className="text-lg font-semibold">Task 1</h3>
-                        <p className="text-gray-500 dark:text-gray-400">Description of Task 1</p>
+                        <h3 className="text-lg font-semibold">{name}</h3>
+                        <p className="text-gray-500 dark:text-gray-400">{description}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                         <span className="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
@@ -27,6 +34,9 @@ export const Task: FC<ITaskProps> = () => {
                     </span>
                 </div>
             </div>
-        </div>
+            <Modal isOpen={isModalOpen} close={toggleModal}>
+                {modalContent}
+            </Modal>
+        </li>
     );
 };

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Column, Task } from "../components";
+// import { Column, Task } from "../components";
 import { useFetchTasks } from "src/libs";
 import { Search } from "./Search";
 
@@ -14,7 +14,7 @@ export const TasksList: FC<ITasksListProps> = ({ projectUid }) => {
         <div className="flex flex-col gap-6">
             <h2 className="text-4xl font-bold">Tasks</h2>
             <Search addNewTask={addNewTask} />
-            <div className="grid grid-cols-3 gap-6">
+            {/* <div className="grid grid-cols-3 gap-6">
                 <Column title="To Do">
                     <Task />
                     <Task />
@@ -33,7 +33,7 @@ export const TasksList: FC<ITasksListProps> = ({ projectUid }) => {
                     <Task />
                     <Task />
                 </Column>
-            </div>
+            </div> */}
         </div>
     );
 };

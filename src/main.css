@@ -13,4 +13,8 @@
     body {
         @apply min-h-screen bg-gray-100 text-black;
     }
+    ul,
+    li {
+        @apply list-none;
+    }
 }

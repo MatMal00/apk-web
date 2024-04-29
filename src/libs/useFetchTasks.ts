@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 import { addNewTaskAction, fetchTasksAction } from "src/actions";
+import { TTaskStatus } from "src/constants";
 import { TTask } from "src/types";
 import useSWRImmutable from "swr/immutable";
 
@@ -44,5 +45,13 @@ export const useFetchTasks = (projectUid: string) => {
     //     [currentUser, mutate, updateUserData]
     // );
 
-    return { tasks: data, error, isLoading, addNewTask };
+    const groupedTasks = data?.reduce(
+        (acc, story) => {
+            acc[story.status].push(story);
+            return acc;
+        },
+        { todo: [], doing: [], done: [] } as Record<TTaskStatus, TTask[]>
+    );
+
+    return { tasks: data, groupedTasks, error, isLoading, addNewTask };
 };
