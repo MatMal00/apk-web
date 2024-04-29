@@ -52,7 +52,7 @@ export const Register: FC = () => {
                     </Form>
                 </Formik>
                 <Button text="Sign up with Google" variant="secondary" onClick={registerWithGoogle} />
-                <div className="mt-4 text-center text-sm" data-id="19">
+                <div className="mt-4 text-center text-sm">
                     {"Already have an account? "}
                     <Link className="underline" to={ROUTE.LOGIN}>
                         Sign in

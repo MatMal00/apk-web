@@ -4,6 +4,7 @@ import { Form, Formik } from "formik";
 import { useAuth } from "src/hooks";
 import { TTask } from "src/types";
 import { createProject } from "src/helpers";
+import { TASK_PRIORITY } from "src/constants";
 
 interface IAddTaskFormProps {
     close: () => void;
@@ -19,13 +20,13 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask }) => {
                 name: "Integrate Payment Gateway",
                 description:
                     "Implement and configure the secure payment gateway integration for the e-commerce platform.",
-                priority: "medium",
+                priority: TASK_PRIORITY.MEDIUM,
                 storyUid: "-NwQnr6gKTvdgxXcszv7",
-                estimatedExecutionTime: 40, // hours
+                estimatedExecutionTime: 40,
                 status: "todo",
                 dateAdded: new Date(),
                 assignedUser: {
-                    id: "98zyx-54vu-321t-srqp-onml",
+                    uid: "98zyx-54vu-321t-srqp-onml",
                     name: "Samantha Reed",
                     role: "DEV",
                 },

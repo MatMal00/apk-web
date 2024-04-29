@@ -27,7 +27,7 @@ export const ColumnItem: FC<IColumnItemProps> = ({
                         <span className="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
                             Medium
                         </span>
-                        <span className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-800 dark:text-blue-100">
+                        <span className="whitespace-nowrap rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-800 dark:text-blue-100">
                             Project A
                         </span>
                     </div>

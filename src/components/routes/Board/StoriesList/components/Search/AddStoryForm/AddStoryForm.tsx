@@ -4,6 +4,7 @@ import { Form, Formik } from "formik";
 import { useAuth } from "src/hooks";
 import { TStory } from "src/types";
 import { createProject } from "src/helpers";
+import { TASK_PRIORITY } from "src/constants";
 
 interface IAddStoryFormProps {
     close: () => void;
@@ -19,12 +20,12 @@ export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewStory }) => 
                 name: "Ultrasonic Drill Rig",
                 description:
                     "This advanced drill rig offers high-efficiency and precision for complex geological surveys.",
-                priority: "high",
+                priority: TASK_PRIORITY.MEDIUM,
                 estimatedCompletionTime: 72, // hours
                 status: "doing",
                 dateAdded: new Date(),
                 assignedUser: {
-                    id: currentUser.uid,
+                    uid: currentUser.uid,
                     name: currentUser.username,
                     role: currentUser.role,
                 },

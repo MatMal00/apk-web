@@ -1,4 +1,4 @@
-import { TKeyOfProjectRole, TKeyOfUserRole, TTaskStatus } from "src/constants";
+import { TKeyOfProjectRole, TKeyOfUserRole, TPriority, TTaskStatus } from "src/constants";
 
 export type TProject = {
     name: string;
@@ -17,14 +17,14 @@ export type TStory = {
     uid: string;
     name: string;
     description: string;
-    priority: "low" | "medium" | "high";
+    priority: TPriority;
     estimatedCompletionTime: number; // In hours
     status: TTaskStatus;
     dateAdded: Date;
     startDate?: Date; // Optional since it's only set when the story status changes to 'doing'
     endDate?: Date; // Optional since it's only set when the story status changes to 'done'
     assignedUser?: {
-        id: string; // Unique identifier for the user
+        uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
         role: TKeyOfUserRole; // Role of the assigned user
     };
@@ -35,7 +35,7 @@ export type TTask = {
     uid: string;
     name: string;
     description: string;
-    priority: "low" | "medium" | "high";
+    priority: TPriority;
     storyUid: string; // Assuming 'story' refers to a link or identifier for related project story or feature
     estimatedExecutionTime: number; // In hours
     status: TTaskStatus;
@@ -43,7 +43,7 @@ export type TTask = {
     startDate?: Date; // Optional since it's only set when the task status changes to 'doing'
     endDate?: Date; // Optional since it's only set when the task status changes to 'done'
     assignedUser?: {
-        id: string; // Unique identifier for the user
+        uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
         role: TKeyOfProjectRole; // Role of the assigned user
     };
