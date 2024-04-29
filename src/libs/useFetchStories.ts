@@ -17,8 +17,8 @@ export const useFetchStories = (projectUid: string) => {
             try {
                 if (!currentUser) return;
 
-                await mutate((projects) => addNewStoryAction(newStory, projectUid, projects), {
-                    optimisticData: (projects) => projects ?? [],
+                await mutate((stories) => addNewStoryAction(newStory, projectUid, stories), {
+                    optimisticData: (stories) => stories ?? [],
                     populateCache: true,
                     revalidate: false,
                 });
@@ -46,25 +46,6 @@ export const useFetchStories = (projectUid: string) => {
         },
         [mutate, projectUid]
     );
-
-    // const removeProject = useCallback(
-    //     async (projectUid: string) => {
-    //         try {
-    //             if (!currentUser) return;
-
-    //             await mutate((projects) => removeProjectAction(projectUid, currentUser, projects), {
-    //                 optimisticData: (projects) => (projects ?? []).filter((project) => project.uid !== projectUid),
-    //                 populateCache: true,
-    //                 revalidate: false,
-    //             });
-    //             updateUserData();
-    //             toast.success("Successfully removed project");
-    //         } catch {
-    //             toast.error("Failed to removed photo");
-    //         }
-    //     },
-    //     [currentUser, mutate, updateUserData]
-    // );
 
     return { stories: data, error, isLoading, addNewStory, addNewTask };
 };

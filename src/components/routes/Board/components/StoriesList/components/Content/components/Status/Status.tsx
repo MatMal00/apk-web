@@ -20,7 +20,7 @@ export const Status: FC<IStatusProps> = ({ story: { priority, status, estimatedC
     };
 
     const completionTime = estimatedCompletionTime > 1 ? "hours" : "hour";
-
+    console.log({ estimatedCompletionTime });
     return (
         <div className="flex flex-col gap-2 pr-5">
             <span

@@ -1,5 +1,5 @@
 import { TStory, TTask } from "src/types";
-import { postRequest } from "./mutations";
+import { postRequest, updateRequest } from "./mutations";
 import { fetcher } from "./fetcher";
 import { mapToCommonResponseModel } from "src/utils";
 
@@ -21,13 +21,22 @@ export const addNewTaskAction = async (
     projectUid: string,
     stories?: TStory[]
 ): Promise<TStory[]> => {
+    if (!stories) return stories ?? [];
+
+    const storyToUpdate = stories.find((story) => story.uid === newTask.storyUid);
+    if (!storyToUpdate) throw new Error("Story not found");
+
+    const estimatedCompletionTime =
+        storyToUpdate.tasks.reduce((acc, task) => acc + task.estimatedCompletionTime, 0) +
+        newTask.estimatedCompletionTime;
+    const updatedStory = { ...storyToUpdate, estimatedCompletionTime };
+    await updateRequest(`/projects/${projectUid}/stories/${newTask.storyUid}`, updatedStory);
+
     const uid = await postRequest(`/projects/${projectUid}/stories/${newTask.storyUid}/tasks`, newTask);
     if (!uid) throw new Error("Something went wrong");
 
-    const storyToUpdate = stories?.find((story) => story.uid === newTask.storyUid);
-    if (!storyToUpdate) throw new Error("Story not found");
-
-    if (!stories) return stories ?? [];
-
-    return [...stories, { ...storyToUpdate, tasks: [...storyToUpdate.tasks, { ...newTask, uid }] }];
+    return stories.map((story) => {
+        if (story.uid === newTask.storyUid) return { ...updatedStory, tasks: [...story.tasks, { ...newTask, uid }] };
+        return story;
+    });
 };
