@@ -9,12 +9,7 @@ export const fetchStoriesAction = async (url: string): Promise<TStory[]> => {
     try {
         const response = await fetcher<{ [key: string]: TStoryResponseModel }>(url);
         const stories = mapToCommonResponseModel<TStoryResponseModel>(response);
-        return stories.map((story) => {
-            const tasks = mapToCommonResponseModel<TTask>(story.tasks);
-            const estimatedCompletionTime = tasks.reduce((acc, task) => acc + task.estimatedCompletionTime, 0);
-
-            return { ...story, estimatedCompletionTime, tasks: mapToCommonResponseModel<TTask>(story.tasks) };
-        });
+        return stories.map((story) => ({ ...story, tasks: mapToCommonResponseModel<TTask>(story.tasks) }));
     } catch (error) {
         console.error({ error });
         return [];
