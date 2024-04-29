@@ -2,13 +2,20 @@ import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { createProject } from "src/helpers";
+import { TStory } from "src/types";
+import { PriorityDropdown, StatusDropdown } from "./components";
+// import cn from "classnames";
 
 interface IInfoModalFormProps {
     close: () => void;
+    story: TStory;
     // addNewStory: (newStory: Omit<TStory, "uid">) => Promise<void>;
 }
 
-export const InfoModalForm: FC<IInfoModalFormProps> = ({ close }) => {
+export const InfoModalForm: FC<IInfoModalFormProps> = ({
+    close,
+    story: { name: initialName, description: initialDescription, status: initialStatus, priority: initialPriority },
+}) => {
     // const { currentUser } = useAuth();
 
     // const handleAddNewStory = () => {
@@ -37,37 +44,49 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({ close }) => {
     return (
         <Card className="w-full cursor-default rounded-lg bg-white p-4 shadow-xl md:p-0">
             <Card.Header className="border-b pb-4">
-                <h3 className="text-2xl font-semibold">Add New Project</h3>
+                <h3 className="text-2xl font-semibold">{initialName}</h3>
             </Card.Header>
             <Formik
                 validationSchema={createProject}
                 initialValues={{
-                    name: "Project",
-                    description:
-                        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id incidunt esse est architecto voluptatibus excepturi",
-                    logoUrl:
-                        "https://img.freepik.com/free-photo/light-bulb-with-drawing-graph_1232-2105.jpg?size=626&ext=jpg",
+                    name: initialName,
+                    description: initialDescription,
+                    status: initialStatus,
+                    priority: initialPriority,
                 }}
                 onSubmit={() => {}}
             >
-                <Form>
-                    <Card.Content className="block py-4">
-                        <div className="flex flex-col space-y-4">
-                            <Input name="name" label="Project Name" placeholder="Enter the project name" />
-                            <Input name="logoUrl" label="Logo url" placeholder="Enter the logo url" />
-                            <TextArea
-                                className="min-h-28"
-                                name="description"
-                                label="Description"
-                                placeholder="Describe the project"
+                {({ values: { status, priority } }) => (
+                    <Form>
+                        <Card.Content className="block py-4">
+                            <div className="flex justify-between gap-10 space-y-4">
+                                <div className="flex basis-2/4 flex-col space-y-4">
+                                    <Input name="name" label="Story Name" placeholder="Enter the project name" />
+                                    <PriorityDropdown priority={priority} />
+                                    <StatusDropdown status={status} />
+                                </div>
+                                <div className="flex basis-2/4 flex-col space-y-4">
+                                    <TextArea
+                                        className="min-h-28"
+                                        name="description"
+                                        label="Description"
+                                        placeholder="Describe the project"
+                                    />
+                                </div>
+                            </div>
+                        </Card.Content>
+                        <Card.Footer className="flex justify-start gap-5 border-t pt-4">
+                            <Button
+                                type="button"
+                                className="basis-32"
+                                onClick={close}
+                                variant="secondary"
+                                text="Close"
                             />
-                        </div>
-                    </Card.Content>
-                    <Card.Footer className="flex justify-between gap-5 border-t pt-4">
-                        <Button type="button" onClick={close} variant="secondary" text="Cancel" />
-                        <Button type="submit" className="ml-2" text="Add Project" />
-                    </Card.Footer>
-                </Form>
+                            <Button type="submit" className="ml-2 basis-32" text="Save" />
+                        </Card.Footer>
+                    </Form>
+                )}
             </Formik>
         </Card>
     );

@@ -32,7 +32,7 @@ export const Content: FC<IContentProps> = ({ story }) => {
                 <Status story={story} />
             </div>
             <Modal large isOpen={isModalOpen} close={handleToggleModal}>
-                <InfoModalForm close={handleToggleModal} />
+                <InfoModalForm close={handleToggleModal} story={story} />
             </Modal>
         </>
     );
