@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { addNewStoryAction, fetchStoriesAction } from "src/actions";
-import { TStory } from "src/types";
+import { addNewStoryAction, addNewTaskAction, fetchStoriesAction } from "src/actions";
+import { TStory, TTask } from "src/types";
 import { useAuth } from "src/hooks";
 import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
@@ -16,7 +16,6 @@ export const useFetchStories = (projectUid: string) => {
         async (newStory: Omit<TStory, "uid">) => {
             try {
                 if (!currentUser) return;
-                console.log({ newStory });
 
                 await mutate((projects) => addNewStoryAction(newStory, projectUid, projects), {
                     optimisticData: (projects) => projects ?? [],
@@ -32,21 +31,21 @@ export const useFetchStories = (projectUid: string) => {
         [currentUser, mutate, projectUid, updateUserData]
     );
 
-    // const addNewTask = useCallback(
-    //     async (newStory: Omit<TTask, "uid">) => {
-    //         try {
-    //             await mutate((stories) => addNewTaskAction(newStory, projectUid, stories?.tasks), {
-    //                 optimisticData: (tasks) => tasks ?? [],
-    //                 populateCache: true,
-    //                 revalidate: false,
-    //             });
-    //             toast.success("Successfully added new task");
-    //         } catch {
-    //             toast.error("Failed to add new task");
-    //         }
-    //     },
-    //     [mutate, projectUid]
-    // );
+    const addNewTask = useCallback(
+        async (newTask: Omit<TTask, "uid">) => {
+            try {
+                await mutate((stories) => addNewTaskAction(newTask, projectUid, stories), {
+                    optimisticData: (stories) => stories ?? [],
+                    populateCache: true,
+                    revalidate: false,
+                });
+                toast.success("Successfully added new task");
+            } catch {
+                toast.error("Failed to add new task");
+            }
+        },
+        [mutate, projectUid]
+    );
 
     // const removeProject = useCallback(
     //     async (projectUid: string) => {
@@ -67,5 +66,5 @@ export const useFetchStories = (projectUid: string) => {
     //     [currentUser, mutate, updateUserData]
     // );
 
-    return { stories: data, error, isLoading, addNewStory };
+    return { stories: data, error, isLoading, addNewStory, addNewTask };
 };
