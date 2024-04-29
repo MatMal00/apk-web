@@ -23,7 +23,7 @@ export const AddProjectForm: FC<IAddProjectFormProps> = ({ close, addNewProject 
                 admins: [currentUser.uid],
                 developers: [],
                 devops: [],
-                createdAt: new Date().toJSON(),
+                createdAt: new Date().getTime(),
                 stories: [],
             };
 

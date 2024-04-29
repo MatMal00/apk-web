@@ -17,6 +17,7 @@ export const useFetchStories = (projectUid: string) => {
         async (newStory: Omit<TStory, "uid">) => {
             try {
                 if (!currentUser) return;
+                console.log({ newStory });
 
                 await mutate((projects) => addNewStoryAction(newStory, projectUid, projects), {
                     optimisticData: (projects) => projects ?? [],

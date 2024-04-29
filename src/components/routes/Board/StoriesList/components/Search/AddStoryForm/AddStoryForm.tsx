@@ -14,16 +14,16 @@ interface IAddStoryFormProps {
 export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewStory }) => {
     const { currentUser } = useAuth();
 
-    const handleAddNewProject = () => {
+    const handleAddNewStory = () => {
         if (currentUser) {
             const payload: Omit<TStory, "uid"> = {
                 name: "Ultrasonic Drill Rig",
                 description:
                     "This advanced drill rig offers high-efficiency and precision for complex geological surveys.",
                 priority: TASK_PRIORITY.MEDIUM,
-                estimatedCompletionTime: 72, // hours
+                estimatedCompletionTime: 0,
                 status: "doing",
-                dateAdded: new Date(),
+                dateAdded: new Date().getTime(),
                 assignedUser: {
                     uid: currentUser.uid,
                     name: currentUser.username,
@@ -51,7 +51,7 @@ export const AddStoryForm: FC<IAddStoryFormProps> = ({ close, addNewStory }) => 
                     logoUrl:
                         "https://img.freepik.com/free-photo/light-bulb-with-drawing-graph_1232-2105.jpg?size=626&ext=jpg",
                 }}
-                onSubmit={() => handleAddNewProject()}
+                onSubmit={() => handleAddNewStory()}
             >
                 <Form>
                     <Card.Content className="block py-4">

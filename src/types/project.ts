@@ -8,7 +8,7 @@ export type TProject = {
     watchers: string[];
     developers: string[];
     devops: string[];
-    createdAt: string;
+    createdAt: number;
     uid: string;
     stories: TStory[]; // List of stories associated with the project
 };
@@ -20,9 +20,9 @@ export type TStory = {
     priority: TPriority;
     estimatedCompletionTime: number; // In hours
     status: TTaskStatus;
-    dateAdded: Date;
-    startDate?: Date; // Optional since it's only set when the story status changes to 'doing'
-    endDate?: Date; // Optional since it's only set when the story status changes to 'done'
+    dateAdded: number;
+    startDate?: number; // Optional since it's only set when the story status changes to 'doing'
+    endDate?: number; // Optional since it's only set when the story status changes to 'done'
     assignedUser?: {
         uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
@@ -37,11 +37,11 @@ export type TTask = {
     description: string;
     priority: TPriority;
     storyUid: string; // Assuming 'story' refers to a link or identifier for related project story or feature
-    estimatedExecutionTime: number; // In hours
+    estimatedCompletionTime: number; // In hours
     status: TTaskStatus;
-    dateAdded: Date;
-    startDate?: Date; // Optional since it's only set when the task status changes to 'doing'
-    endDate?: Date; // Optional since it's only set when the task status changes to 'done'
+    dateAdded: number;
+    startDate?: number; // Optional since it's only set when the task status changes to 'doing'
+    endDate?: number; // Optional since it's only set when the task status changes to 'done'
     assignedUser?: {
         uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
