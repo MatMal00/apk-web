@@ -1,19 +1,27 @@
 import { FC, ReactNode } from "react";
 import { useHandleClickOutside } from "src/hooks/useHandleClickOutside";
+import cn from "classnames";
 
 interface IModalProps {
     isOpen: boolean;
     close: () => void;
     children: ReactNode | ReactNode[];
+    large?: boolean;
 }
 
-export const Modal: FC<IModalProps> = ({ isOpen, close, children }) => {
+export const Modal: FC<IModalProps> = ({ isOpen, close, large, children }) => {
     const modalRef = useHandleClickOutside<HTMLDivElement>(isOpen, close);
 
     if (!isOpen) return null;
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div ref={modalRef} className="w-full max-w-lg p-4">
+            <div
+                ref={modalRef}
+                className={cn("w-full p-4", {
+                    "max-w-lg": !large,
+                    "max-w-screen-xl": large,
+                })}
+            >
                 {children}
             </div>
         </div>
