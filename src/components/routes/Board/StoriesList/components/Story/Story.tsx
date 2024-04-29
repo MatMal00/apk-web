@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import { ColumnItem } from "../../../components";
+import { Column } from "../../../components";
 import { TStory } from "src/types";
 
 interface IStoryProps {
@@ -13,7 +13,7 @@ export const Story: FC<IStoryProps> = ({ story }) => {
 
     return (
         <>
-            <ColumnItem
+            <Column.Item
                 toggleModal={handleToggleModal}
                 isModalOpen={isModalOpen}
                 modalContent={<div></div>}

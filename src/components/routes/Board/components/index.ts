@@ -1,2 +1,2 @@
 export * from "./Column";
-export * from "./ColumnItem";
+export * from "./Column/ColumnItem";

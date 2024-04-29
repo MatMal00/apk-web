@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { TTask } from "src/types";
-import { ColumnItem } from "../../../components";
+import { Column } from "../../../components";
 
 interface ITaskProps {
     task: TTask;
@@ -13,7 +13,7 @@ export const Task: FC<ITaskProps> = ({ task }) => {
 
     return (
         <>
-            <ColumnItem
+            <Column.Item
                 toggleModal={handleToggleModal}
                 isModalOpen={isModalOpen}
                 modalContent={<div></div>}
