@@ -2,14 +2,19 @@ import { FC, ReactNode } from "react";
 import { Modal } from "src/components/common";
 import { TStory, TTask } from "src/types";
 
-interface ITaskProps {
+interface IColumnItemProps {
     modalContent: ReactNode | ReactNode[];
     toggleModal: () => void;
     isModalOpen: boolean;
     task: TStory | TTask;
 }
 
-export const Task: FC<ITaskProps> = ({ modalContent, toggleModal, isModalOpen, task: { name, description } }) => {
+export const ColumnItem: FC<IColumnItemProps> = ({
+    modalContent,
+    toggleModal,
+    isModalOpen,
+    task: { name, description },
+}) => {
     return (
         <li className="cursor-pointer space-y-4" onClick={toggleModal}>
             <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-700">
