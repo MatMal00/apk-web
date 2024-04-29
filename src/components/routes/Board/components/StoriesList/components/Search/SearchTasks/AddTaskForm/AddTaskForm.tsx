@@ -22,7 +22,7 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask }) => {
                     "Implement and configure the secure payment gateway integration for the e-commerce platform.",
                 priority: TASK_PRIORITY.MEDIUM,
                 storyUid: "-NweyJh0d8TfEUHFdQoz",
-                estimatedExecutionTime: 40,
+                estimatedCompletionTime: 40,
                 status: "todo",
                 dateAdded: new Date().getTime(),
                 assignedUser: {

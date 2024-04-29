@@ -1,19 +1,23 @@
 import { FC } from "react";
-import { Column } from "../components";
-import { useFetchTasks } from "src/libs";
-import { Search, Task } from "./components";
-import { TASK_STATUS } from "src/constants";
+import { TASK_STATUS, TTaskStatus } from "src/constants";
+import { TTask } from "src/types";
+import { Column } from "../../../Column";
+import { Task } from "./Task";
 
 interface ITasksListProps {
-    projectUid: string;
+    tasks: TTask[];
 }
 
-export const TasksList: FC<ITasksListProps> = ({ projectUid }) => {
-    const { addNewTask, groupedTasks } = useFetchTasks(projectUid);
+export const TasksList: FC<ITasksListProps> = ({ tasks }) => {
+    const groupedTasks = tasks?.reduce(
+        (acc, story) => {
+            acc[story.status].push(story);
+            return acc;
+        },
+        { todo: [], doing: [], done: [] } as Record<TTaskStatus, TTask[]>
+    );
     return (
-        <div className="flex flex-col gap-6">
-            <h2 className="text-4xl font-bold">Tasks</h2>
-            <Search addNewTask={addNewTask} />
+        <div className="flex flex-col gap-6 rounded-lg bg-gray-200">
             <div className="grid grid-cols-3 gap-6">
                 <Column title="To Do">
                     {groupedTasks?.[TASK_STATUS.TO_DO].map((task) => <Task key={task.uid} task={task} />)}

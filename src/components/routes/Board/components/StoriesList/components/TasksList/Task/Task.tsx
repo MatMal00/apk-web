@@ -1,12 +1,12 @@
 import { FC, useCallback, useState } from "react";
-import { Column } from "../../../components";
-import { TStory } from "src/types";
+import { TTask } from "src/types";
+import { Column } from "../../../../Column";
 
-interface IStoryProps {
-    story: TStory;
+interface ITaskProps {
+    task: TTask;
 }
 
-export const Story: FC<IStoryProps> = ({ story }) => {
+export const Task: FC<ITaskProps> = ({ task }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
@@ -17,7 +17,7 @@ export const Story: FC<IStoryProps> = ({ story }) => {
                 toggleModal={handleToggleModal}
                 isModalOpen={isModalOpen}
                 modalContent={<div></div>}
-                task={story}
+                task={task}
             />
         </>
     );

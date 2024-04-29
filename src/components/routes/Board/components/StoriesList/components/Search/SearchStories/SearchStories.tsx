@@ -3,24 +3,24 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Input, Modal } from "src/components/common";
 import { Form, Formik } from "formik";
-import { AddTaskForm } from "./AddTaskForm";
-import { TTask } from "src/types";
+import { AddStoryForm } from "./AddStoryForm";
+import { TStory } from "src/types";
 import { useSearchParams } from "react-router-dom";
 
-interface ISearchProps {
-    addNewTask: (newTask: Omit<TTask, "uid">) => Promise<void>;
+interface ISearchStoriesProps {
+    addNewStory: (newStory: Omit<TStory, "uid">) => Promise<void>;
 }
 
-export const Search: FC<ISearchProps> = ({ addNewTask }) => {
+export const SearchStories: FC<ISearchStoriesProps> = ({ addNewStory }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const search = searchParams.get("searchTasks") ?? "";
+    const search = searchParams.get("searchStories") ?? "";
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
 
-    const handleSearchProject = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSearchStories = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setSearchParams(value.length ? { ...searchParams, searchTasks: value } : undefined);
+        setSearchParams(value.length ? { ...searchParams, searchStories: value } : undefined);
     };
 
     return (
@@ -28,9 +28,9 @@ export const Search: FC<ISearchProps> = ({ addNewTask }) => {
             <Formik initialValues={{ search: search }} onSubmit={() => {}}>
                 <Form className="flex items-center justify-between gap-6">
                     <Input
-                        onChange={handleSearchProject}
+                        onChange={handleSearchStories}
                         name="search"
-                        placeholder="Search tasks..."
+                        placeholder="Search stories..."
                         containerClassName="basis-80"
                     />
                     <Button
@@ -42,7 +42,7 @@ export const Search: FC<ISearchProps> = ({ addNewTask }) => {
                 </Form>
             </Formik>
             <Modal isOpen={isModalOpen} close={handleToggleModal}>
-                <AddTaskForm close={handleToggleModal} addNewTask={addNewTask} />
+                <AddStoryForm close={handleToggleModal} addNewStory={addNewStory} />
             </Modal>
         </>
     );
