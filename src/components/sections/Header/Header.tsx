@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE } from "src/constants";
+import { doSignOut } from "src/firebase";
 
 interface IHeaderProps {}
 
@@ -14,7 +15,7 @@ export const Header: FC<IHeaderProps> = () => {
                 <Link className="text-sm font-medium underline-offset-4 hover:underline" to={ROUTE.HOME}>
                     Projects
                 </Link>
-                <Link className="text-sm font-medium underline-offset-4 hover:underline" to={""}>
+                <Link className="text-sm font-medium underline-offset-4 hover:underline" to={""} onClick={doSignOut}>
                     Logout
                 </Link>
             </nav>
