@@ -111,9 +111,8 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                 className="basis-32"
                                 variant="secondary"
                                 text="Close"
-                                disabled={!dirty}
                             />
-                            <Button type="submit" className="ml-2 basis-32" text="Save" />
+                            <Button type="submit" className="ml-2 basis-32" text="Save" disabled={!dirty} />
                         </Card.Footer>
                     </Form>
                 )}
