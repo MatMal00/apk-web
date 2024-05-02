@@ -7,7 +7,7 @@ import { PriorityDropdown, StatusDropdown, UsersDropdown } from "./components";
 import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
-import { TASK_PRIORITY } from "src/constants";
+import { TASK_PRIORITY, TASK_STATUS } from "src/constants";
 import cn from "classnames";
 
 interface IInfoModalFormProps {
@@ -49,7 +49,17 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                     userUid: initialAssignedUser?.uid ?? "",
                 }}
                 onSubmit={(values) => {
-                    updateStoryData({ ...story, ...values });
+                    const endDate = values.status === TASK_STATUS.DONE ? new Date().getTime() : null;
+                    const startDate =
+                        initialStatus === TASK_STATUS.TO_DO ? new Date().getTime() : story.startDate ?? null;
+                    const updateStatus = !initialAssignedUser?.uid;
+                    updateStoryData({
+                        ...story,
+                        ...values,
+                        endDate,
+                        status: updateStatus ? TASK_STATUS.DOING : values.status,
+                        startDate,
+                    });
                     close();
                 }}
             >

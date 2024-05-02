@@ -57,7 +57,8 @@ export const useFetchStories = (projectUid: string) => {
                 });
 
                 toast.success("Successfully updated story data");
-            } catch {
+            } catch (err) {
+                console.log(err);
                 toast.error("Failed to update story data");
             }
         },

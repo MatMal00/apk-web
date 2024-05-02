@@ -21,8 +21,8 @@ export type TStory = {
     estimatedCompletionTime: number; // In hours
     status: TTaskStatus;
     dateAdded: number;
-    startDate?: number; // Optional since it's only set when the story status changes to 'doing'
-    endDate?: number; // Optional since it's only set when the story status changes to 'done'
+    startDate?: number | null; // Optional since it's only set when the story status changes to 'doing'
+    endDate?: number | null; // Optional since it's only set when the story status changes to 'done'
     assignedUser?: {
         uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
@@ -40,8 +40,8 @@ export type TTask = {
     estimatedCompletionTime: number; // In hours
     status: TTaskStatus;
     dateAdded: number;
-    startDate?: number; // Optional since it's only set when the task status changes to 'doing'
-    endDate?: number; // Optional since it's only set when the task status changes to 'done'
+    startDate?: number | null; // Optional since it's only set when the task status changes to 'doing'
+    endDate?: number | null; // Optional since it's only set when the task status changes to 'done'
     assignedUser?: {
         uid: string; // Unique identifier for the user
         name: string; // Name of the assigned user
