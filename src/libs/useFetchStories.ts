@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { addNewStoryAction, addNewTaskAction, fetchStoriesAction } from "src/actions";
+import { addNewStoryAction, addNewTaskAction, fetchStoriesAction, updateStoryAction } from "src/actions";
 import { TStory, TTask } from "src/types";
 import { useAuth } from "src/hooks";
 import useSWRImmutable from "swr/immutable";
@@ -47,5 +47,22 @@ export const useFetchStories = (projectUid: string) => {
         [mutate, projectUid]
     );
 
-    return { stories: data, error, isLoading, addNewStory, addNewTask };
+    const updateStoryData = useCallback(
+        async (updatedData: TStory) => {
+            try {
+                await mutate((stories) => updateStoryAction(updatedData, projectUid, stories), {
+                    optimisticData: (stories) => stories ?? [],
+                    populateCache: true,
+                    revalidate: false,
+                });
+
+                toast.success("Successfully updated story data");
+            } catch {
+                toast.error("Failed to update story data");
+            }
+        },
+        [mutate, projectUid]
+    );
+
+    return { stories: data, error, isLoading, updateStoryData, addNewStory, addNewTask };
 };

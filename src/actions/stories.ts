@@ -1,5 +1,5 @@
 import { TStory, TTask } from "src/types";
-import { postRequest } from "./mutations";
+import { postRequest, updateRequest } from "./mutations";
 import { fetcher } from "./fetcher";
 import { mapToCommonResponseModel } from "src/utils";
 
@@ -26,9 +26,18 @@ export const addNewStoryAction = async (
     projectUid: string,
     stories?: TStory[]
 ): Promise<TStory[]> => {
-    console.log({ newStory });
     const uid = await postRequest(`/projects/${projectUid}/stories`, newStory);
     if (!uid) throw new Error("Something went wrong");
 
     return [{ ...newStory, uid }, ...(stories ?? [])];
+};
+
+export const updateStoryAction = async (
+    updatedStory: TStory,
+    projectUid: string,
+    stories?: TStory[]
+): Promise<TStory[]> => {
+    await updateRequest(`/projects/${projectUid}/stories/${updatedStory.uid}`, updatedStory);
+    const updatedStories = stories?.map((story) => (story.uid === updatedStory.uid ? updatedStory : story));
+    return updatedStories ?? [];
 };

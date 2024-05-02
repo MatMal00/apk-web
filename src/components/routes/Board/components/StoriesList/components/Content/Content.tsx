@@ -8,9 +8,10 @@ import { InfoModalForm } from "./components/InfoModalForm";
 
 interface IContentProps {
     story: TStory;
+    updateStoryData: (updatedData: TStory) => void;
 }
 
-export const Content: FC<IContentProps> = ({ story }) => {
+export const Content: FC<IContentProps> = ({ story, updateStoryData }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
@@ -32,7 +33,7 @@ export const Content: FC<IContentProps> = ({ story }) => {
                 <Status story={story} />
             </div>
             <Modal large isOpen={isModalOpen} close={handleToggleModal}>
-                <InfoModalForm close={handleToggleModal} story={story} />
+                <InfoModalForm close={handleToggleModal} story={story} updateStoryData={updateStoryData} />
             </Modal>
         </>
     );

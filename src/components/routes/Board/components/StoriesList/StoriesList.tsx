@@ -7,7 +7,7 @@ interface IStoriesListProps {
 }
 
 export const StoriesList: FC<IStoriesListProps> = ({ projectUid }) => {
-    const { stories, addNewStory, addNewTask } = useFetchStories(projectUid);
+    const { stories, addNewStory, addNewTask, updateStoryData } = useFetchStories(projectUid);
 
     return (
         <>
@@ -15,7 +15,7 @@ export const StoriesList: FC<IStoriesListProps> = ({ projectUid }) => {
             {stories?.map((story) => {
                 return (
                     <div key={story.uid} className="flex flex-col gap-6 rounded-lg bg-gray-200 p-6">
-                        <Content story={story} />
+                        <Content story={story} updateStoryData={updateStoryData} />
                         <SearchTasks addNewTask={addNewTask} storyUid={story.uid} />
                         <TasksList key={story.uid} tasks={story.tasks} />
                     </div>
