@@ -9,9 +9,10 @@ import { useSearchParams } from "react-router-dom";
 
 interface ISearchTasksProps {
     addNewTask: (newTask: Omit<TTask, "uid">) => Promise<void>;
+    storyUid: string;
 }
 
-export const SearchTasks: FC<ISearchTasksProps> = ({ addNewTask }) => {
+export const SearchTasks: FC<ISearchTasksProps> = ({ addNewTask, storyUid }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const search = searchParams.get("searchTasks") ?? "";
@@ -42,7 +43,7 @@ export const SearchTasks: FC<ISearchTasksProps> = ({ addNewTask }) => {
                 </Form>
             </Formik>
             <Modal isOpen={isModalOpen} close={handleToggleModal}>
-                <AddTaskForm close={handleToggleModal} addNewTask={addNewTask} />
+                <AddTaskForm close={handleToggleModal} addNewTask={addNewTask} storyUid={storyUid} />
             </Modal>
         </>
     );

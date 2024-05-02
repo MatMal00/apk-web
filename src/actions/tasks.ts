@@ -33,6 +33,7 @@ export const addNewTaskAction = async (
     await updateRequest(`/projects/${projectUid}/stories/${newTask.storyUid}`, updatedStory);
 
     const uid = await postRequest(`/projects/${projectUid}/stories/${newTask.storyUid}/tasks`, newTask);
+    console.log(uid);
     if (!uid) throw new Error("Something went wrong");
 
     return stories.map((story) => {

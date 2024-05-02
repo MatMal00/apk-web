@@ -16,7 +16,7 @@ export const StoriesList: FC<IStoriesListProps> = ({ projectUid }) => {
                 return (
                     <div key={story.uid} className="flex flex-col gap-6 rounded-lg bg-gray-200 p-6">
                         <Content story={story} />
-                        <SearchTasks addNewTask={addNewTask} />
+                        <SearchTasks addNewTask={addNewTask} storyUid={story.uid} />
                         <TasksList key={story.uid} tasks={story.tasks} />
                     </div>
                 );

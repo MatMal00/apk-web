@@ -5,7 +5,10 @@ import { createProject, timestampToDate } from "src/helpers";
 import { TStory } from "src/types";
 import { PriorityDropdown, StatusDropdown, UsersDropdown } from "./components";
 import { useFetchUsers } from "src/libs";
-// import cn from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
+import cn from "classnames";
+import { TASK_PRIORITY } from "src/constants";
 
 interface IInfoModalFormProps {
     close: () => void;
@@ -25,6 +28,7 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
         endDate,
         startDate,
         assignedUser: initialAssignedUser,
+        tasks,
     },
 }) => {
     const { data = [] } = useFetchUsers();
@@ -72,7 +76,7 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                 {({ values: { status, priority, userUid }, dirty }) => (
                     <Form>
                         <Card.Content className="block py-4">
-                            <div className="flex justify-between gap-10 space-y-4">
+                            <div className="flex max-h-96 flex-col justify-between space-y-4 overflow-y-auto pr-2.5 md:max-h-max md:flex-row md:gap-10 md:p-0">
                                 <div className="flex basis-2/4 flex-col space-y-4">
                                     <Input name="name" label="Story Name" placeholder="Enter the project name" />
                                     <PriorityDropdown priority={priority} />
@@ -110,6 +114,29 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                             <p>{timestampToDate(endDate)}</p>
                                         </div>
                                     )}
+                                </div>
+                            </div>
+                            <div className="my-3.5">
+                                <h4 className="mb-1 text-sm font-medium">Tasks</h4>
+                                <div className="grid max-h-52 gap-2 overflow-y-auto">
+                                    {tasks.map(({ name, estimatedCompletionTime, ...task }) => (
+                                        <div className="flex max-h-52 items-center justify-between  rounded-md bg-gray-100 p-2 dark:bg-gray-800">
+                                            <div className="flex items-center gap-2">
+                                                <div
+                                                    className={cn("h-3 w-3 rounded-full", {
+                                                        ["bg-gray-500"]: task.priority === TASK_PRIORITY.LOW,
+                                                        ["bg-green-500"]: task.priority === TASK_PRIORITY.MEDIUM,
+                                                        ["bg-red-500"]: task.priority === TASK_PRIORITY.HIGH,
+                                                    })}
+                                                ></div>
+                                                <p>{name}</p>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                                <FontAwesomeIcon icon={faClock} />
+                                                <span data-id="55">{estimatedCompletionTime}h</span>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </Card.Content>

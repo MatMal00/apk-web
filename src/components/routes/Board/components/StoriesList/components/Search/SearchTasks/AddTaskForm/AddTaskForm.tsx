@@ -9,9 +9,10 @@ import { TASK_PRIORITY } from "src/constants";
 interface IAddTaskFormProps {
     close: () => void;
     addNewTask: (newTask: Omit<TTask, "uid">) => Promise<void>;
+    storyUid: string;
 }
 
-export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask }) => {
+export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask, storyUid }) => {
     const { currentUser } = useAuth();
 
     const handleAddNewTask = () => {
@@ -21,7 +22,7 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask }) => {
                 description:
                     "Implement and configure the secure payment gateway integration for the e-commerce platform.",
                 priority: TASK_PRIORITY.MEDIUM,
-                storyUid: "-NwfWEOJnUbk6NCzwGF2",
+                storyUid,
                 estimatedCompletionTime: 40,
                 status: "todo",
                 dateAdded: new Date().getTime(),
