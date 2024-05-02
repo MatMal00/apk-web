@@ -17,7 +17,7 @@ export const Content: FC<IContentProps> = ({ story }) => {
 
     return (
         <>
-            <div className="relative flex justify-between">
+            <div className="relative flex flex-col justify-between md:flex-row">
                 <Details
                     story={story}
                     detailsIcon={

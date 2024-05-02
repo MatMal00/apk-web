@@ -18,7 +18,7 @@ export const TasksList: FC<ITasksListProps> = ({ tasks }) => {
     );
     return (
         <div className="flex flex-col gap-6 rounded-lg bg-gray-200">
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid gap-6 md:grid-cols-3">
                 <Column title="To Do">
                     {groupedTasks?.[TASK_STATUS.TO_DO].map((task) => <Task key={task.uid} task={task} />)}
                 </Column>

@@ -76,7 +76,7 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                 {({ values: { status, priority, userUid }, dirty }) => (
                     <Form>
                         <Card.Content className="block py-4">
-                            <div className="flex max-h-96 flex-col justify-between space-y-4 overflow-y-auto pr-2.5 md:max-h-max md:flex-row md:gap-10 md:p-0">
+                            <div className="flex max-h-56 flex-col justify-between space-y-4 overflow-y-auto pr-2.5 md:max-h-max md:flex-row md:gap-10 md:p-0">
                                 <div className="flex basis-2/4 flex-col space-y-4">
                                     <Input name="name" label="Story Name" placeholder="Enter the project name" />
                                     <PriorityDropdown priority={priority} />
@@ -118,9 +118,9 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                             </div>
                             <div className="my-3.5">
                                 <h4 className="mb-1 text-sm font-medium">Tasks</h4>
-                                <div className="grid max-h-52 gap-2 overflow-y-auto">
+                                <div className="grid max-h-24 gap-2 overflow-y-auto md:max-h-52">
                                     {tasks.map(({ name, estimatedCompletionTime, ...task }) => (
-                                        <div className="flex max-h-52 items-center justify-between  rounded-md bg-gray-100 p-2 dark:bg-gray-800">
+                                        <div className="flex  items-center justify-between rounded-md bg-gray-100 p-2  dark:bg-gray-800">
                                             <div className="flex items-center gap-2">
                                                 <div
                                                     className={cn("h-3 w-3 rounded-full", {
