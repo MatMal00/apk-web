@@ -5,6 +5,13 @@ export const USER_ROLE = {
     WATCHER: "WATCHER",
 } as const;
 
+export const USER_ROLE_NAME = {
+    ADMIN: "Admin",
+    DEV: "Developer",
+    DEVOPS: "DevOps",
+    WATCHER: "Watcher",
+} as const;
+
 export const PROJECT_ROLE = {
     DEV: "DEV",
     DEVOPS: "DEVOPS",

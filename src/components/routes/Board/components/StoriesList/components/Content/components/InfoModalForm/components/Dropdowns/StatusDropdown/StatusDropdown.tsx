@@ -13,7 +13,7 @@ export const StatusDropdown: FC<IStatusDropdownProps> = ({ status }) => {
             label="Status"
             name="status"
             items={Object.values(TASK_STATUS)}
-            currentItem={
+            displayValue={
                 <div className="flex items-center gap-2">
                     <div
                         className={cn("h-3 w-3 rounded-full", {

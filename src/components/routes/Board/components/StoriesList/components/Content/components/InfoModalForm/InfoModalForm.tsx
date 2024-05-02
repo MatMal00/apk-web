@@ -3,7 +3,8 @@ import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { createProject, timestampToDate } from "src/helpers";
 import { TStory } from "src/types";
-import { PriorityDropdown, StatusDropdown } from "./components";
+import { PriorityDropdown, StatusDropdown, UsersDropdown } from "./components";
+import { useFetchUsers } from "src/libs";
 // import cn from "classnames";
 
 interface IInfoModalFormProps {
@@ -23,8 +24,10 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
         estimatedCompletionTime,
         endDate,
         startDate,
+        assignedUser: initialAssignedUser,
     },
 }) => {
+    const { data = [] } = useFetchUsers();
     // const { currentUser } = useAuth();
 
     // const handleAddNewStory = () => {
@@ -62,10 +65,11 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                     description: initialDescription,
                     status: initialStatus,
                     priority: initialPriority,
+                    userUid: initialAssignedUser?.uid ?? "",
                 }}
                 onSubmit={() => {}}
             >
-                {({ values: { status, priority }, dirty }) => (
+                {({ values: { status, priority, userUid }, dirty }) => (
                     <Form>
                         <Card.Content className="block py-4">
                             <div className="flex justify-between gap-10 space-y-4">
@@ -79,6 +83,11 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                             <p>{timestampToDate(startDate)}</p>
                                         </div>
                                     )}
+                                    <UsersDropdown
+                                        currentUser={data.find((user) => user.uid === userUid)}
+                                        userUid={initialAssignedUser?.uid ?? ""}
+                                        data={data}
+                                    />
                                 </div>
                                 <div className="flex basis-2/4 flex-col space-y-4">
                                     <TextArea

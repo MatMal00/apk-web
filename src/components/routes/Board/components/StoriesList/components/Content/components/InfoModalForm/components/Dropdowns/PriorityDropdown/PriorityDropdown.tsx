@@ -13,7 +13,7 @@ export const PriorityDropdown: FC<IPriorityDropdownProps> = ({ priority }) => {
             label="Priority"
             name="priority"
             items={Object.values(TASK_PRIORITY)}
-            currentItem={
+            displayValue={
                 <div className="flex items-center gap-2">
                     <div
                         className={cn("h-3 w-3 rounded-full", {
