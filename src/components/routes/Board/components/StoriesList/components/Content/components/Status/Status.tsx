@@ -35,7 +35,7 @@ export const Status: FC<IStatusProps> = ({ story: { priority, status, estimatedC
             <div className="flex items-center gap-2">
                 <div
                     className={cn(
-                        "h-3 w-3 rounded-full bg-yellow-500",
+                        "h-3 w-3 rounded-full",
 
                         {
                             ["bg-gray-500"]: status === TASK_STATUS.TO_DO,
