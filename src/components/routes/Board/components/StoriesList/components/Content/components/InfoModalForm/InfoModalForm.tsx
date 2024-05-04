@@ -3,7 +3,7 @@ import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { timestampToDate } from "src/helpers";
 import { TStory } from "src/types";
-import { PriorityDropdown, StatusDropdown, UsersDropdown } from "./components";
+import { PriorityDropdown, StatusDropdown, UsersDropdown } from "src/components/common/Form/Dropdown/components";
 import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
