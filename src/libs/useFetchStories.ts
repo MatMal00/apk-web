@@ -3,8 +3,10 @@ import {
     addNewStoryAction,
     addNewTaskAction,
     deleteStoryAction,
+    deleteTaskAction,
     fetchStoriesAction,
     updateStoryAction,
+    updateTaskAction,
 } from "src/actions";
 import { TStory, TTask } from "src/types";
 import { useAuth } from "src/hooks";
@@ -71,13 +73,31 @@ export const useFetchStories = (projectUid: string) => {
         [mutate, projectUid]
     );
 
+    const updateTaskData = useCallback(
+        async (updatedData: TTask) => {
+            try {
+                await mutate((stories) => updateTaskAction(updatedData, projectUid, stories), {
+                    optimisticData: (stories) => stories ?? [],
+                    populateCache: true,
+                    revalidate: false,
+                });
+
+                toast.success("Successfully updated task data");
+            } catch (err) {
+                console.log(err);
+                toast.error("Failed to update task data");
+            }
+        },
+        [mutate, projectUid]
+    );
+
     const deleteStory = useCallback(
         async (storyUid: string) => {
             try {
                 if (!currentUser) return;
 
                 await mutate((stories) => deleteStoryAction(storyUid, projectUid, stories), {
-                    optimisticData: (stories) => (stories ?? []).filter((project) => project.uid !== storyUid),
+                    optimisticData: (stories) => stories ?? [],
                     populateCache: true,
                     revalidate: false,
                 });
@@ -89,5 +109,33 @@ export const useFetchStories = (projectUid: string) => {
         [currentUser, mutate, projectUid]
     );
 
-    return { stories: data, error, isLoading, updateStoryData, addNewStory, addNewTask, deleteStory };
+    const deleteTask = useCallback(
+        async (task: TTask) => {
+            try {
+                if (!currentUser) return;
+
+                await mutate((stories) => deleteTaskAction(task, projectUid, stories), {
+                    optimisticData: (stories) => stories ?? [],
+                    populateCache: true,
+                    revalidate: false,
+                });
+                toast.success("Successfully removed task");
+            } catch {
+                toast.error("Failed to removed task");
+            }
+        },
+        [currentUser, mutate, projectUid]
+    );
+
+    return {
+        stories: data,
+        error,
+        isLoading,
+        updateStoryData,
+        updateTaskData,
+        addNewStory,
+        addNewTask,
+        deleteStory,
+        deleteTask,
+    };
 };

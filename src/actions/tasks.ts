@@ -1,5 +1,5 @@
 import { TStory, TTask } from "src/types";
-import { postRequest, updateRequest } from "./mutations";
+import { deleteRequest, postRequest, updateRequest } from "./mutations";
 import { fetcher } from "./fetcher";
 import { mapToCommonResponseModel } from "src/utils";
 
@@ -21,7 +21,7 @@ export const addNewTaskAction = async (
     projectUid: string,
     stories?: TStory[]
 ): Promise<TStory[]> => {
-    if (!stories) return stories ?? [];
+    if (!stories) return [];
 
     const storyToUpdate = stories.find((story) => story.uid === newTask.storyUid);
     if (!storyToUpdate) throw new Error("Story not found");
@@ -40,4 +40,39 @@ export const addNewTaskAction = async (
         if (story.uid === newTask.storyUid) return { ...updatedStory, tasks: [...story.tasks, { ...newTask, uid }] };
         return story;
     });
+};
+
+export const updateTaskAction = async (
+    updatedTask: TTask,
+    projectUid: string,
+    stories?: TStory[]
+): Promise<TStory[]> => {
+    if (!stories) return [];
+
+    const storyToUpdate = stories.find((story) => story.uid === updatedTask.storyUid);
+    if (!storyToUpdate) throw new Error("Story not found");
+
+    const estimatedCompletionTime =
+        storyToUpdate.tasks.reduce((acc, task) => {
+            if (task.uid !== updatedTask.uid) return acc + task.estimatedCompletionTime;
+            return acc;
+        }, 0) + updatedTask.estimatedCompletionTime;
+
+    const updatedStory = {
+        ...storyToUpdate,
+        tasks: storyToUpdate.tasks.map((task) => (task.uid === updatedTask.uid ? updatedTask : task)),
+        estimatedCompletionTime,
+    };
+    await updateRequest(`/projects/${projectUid}/stories/${updatedTask.storyUid}`, updatedStory);
+
+    return stories.map((story) => (story.uid === updatedTask.storyUid ? updatedStory : story));
+};
+
+export const deleteTaskAction = async (task: TTask, projectUid: string, stories?: TStory[]) => {
+    await deleteRequest(`/projects/${projectUid}/stories/${task.storyUid}/tasks/${task.uid}`);
+
+    return (stories ?? []).map((story) => ({
+        ...story,
+        tasks: story.tasks.filter((storyTask) => storyTask.uid !== task.uid),
+    }));
 };
