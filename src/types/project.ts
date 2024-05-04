@@ -45,4 +45,5 @@ export type TAssignedUser = {
     uid: string; // Unique identifier for the user
     name: string; // Name of the assigned user
     role: TKeyOfUserRole; // Role of the assigned user
+    activeProjectUid?: string | null;
 } | null;
