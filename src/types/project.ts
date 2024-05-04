@@ -1,4 +1,4 @@
-import { TKeyOfProjectRole, TKeyOfUserRole, TPriority, TTaskStatus } from "src/constants";
+import { TKeyOfUserRole, TPriority, TTaskStatus } from "src/constants";
 
 export type TProject = {
     name: string;
@@ -23,11 +23,7 @@ export type TStory = {
     dateAdded: number;
     startDate?: number | null; // Optional since it's only set when the story status changes to 'doing'
     endDate?: number | null; // Optional since it's only set when the story status changes to 'done'
-    assignedUser?: {
-        uid: string; // Unique identifier for the user
-        name: string; // Name of the assigned user
-        role: TKeyOfUserRole; // Role of the assigned user
-    };
+    assignedUser?: TAssignedUser;
     tasks: TTask[]; // List of tasks associated with the story
 };
 
@@ -42,9 +38,11 @@ export type TTask = {
     dateAdded: number;
     startDate?: number | null; // Optional since it's only set when the task status changes to 'doing'
     endDate?: number | null; // Optional since it's only set when the task status changes to 'done'
-    assignedUser?: {
-        uid: string; // Unique identifier for the user
-        name: string; // Name of the assigned user
-        role: TKeyOfProjectRole; // Role of the assigned user
-    };
+    assignedUser?: TAssignedUser;
 };
+
+export type TAssignedUser = {
+    uid: string; // Unique identifier for the user
+    name: string; // Name of the assigned user
+    role: TKeyOfUserRole; // Role of the assigned user
+} | null;

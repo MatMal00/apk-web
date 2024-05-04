@@ -2,25 +2,25 @@ import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
 import { timestampToDate } from "src/helpers";
-import { TStory } from "src/types";
+import { TTask } from "src/types";
 import { PriorityDropdown, StatusDropdown, UsersDropdown } from "src/components/common/Form/Dropdown/components";
 import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { TASK_PRIORITY, TASK_STATUS } from "src/constants";
-import cn from "classnames";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { TASK_STATUS } from "src/constants";
+// import cn from "classnames";
 
 interface IInfoModalFormProps {
     close: () => void;
-    story: TStory;
-    updateStoryData: (updatedData: TStory) => void;
-    deleteStory: (storyUid: string) => void;
+    task: TTask;
+    updateTaskData: (updatedData: TTask) => Promise<void>;
+    deleteTask: (task: TTask) => Promise<void>;
 }
 
 export const InfoModalForm: FC<IInfoModalFormProps> = ({
     close,
-    story,
-    story: {
+    task,
+    task: {
         name: initialName,
         description: initialDescription,
         status: initialStatus,
@@ -30,14 +30,12 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
         endDate,
         startDate,
         assignedUser: initialAssignedUser,
-        tasks,
-        uid,
     },
-    deleteStory,
-    updateStoryData,
+    deleteTask,
+    updateTaskData,
 }) => {
     const handleDeleteStory = () => {
-        deleteStory(uid);
+        deleteTask(task);
         close();
     };
 
@@ -66,19 +64,19 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                 onSubmit={(values) => {
                     const endDate = values.status === TASK_STATUS.DONE ? new Date().getTime() : null;
                     const startDate =
-                        initialStatus === TASK_STATUS.TO_DO ? new Date().getTime() : story.startDate ?? null;
+                        initialStatus === TASK_STATUS.TO_DO ? new Date().getTime() : task.startDate ?? null;
                     const updateStatus = !initialAssignedUser?.uid;
                     const assignedUser = users.find((user) => user.uid === values.userUid);
-                    updateStoryData({
-                        ...story,
+                    updateTaskData({
+                        ...task,
                         ...values,
                         endDate,
                         status: updateStatus ? TASK_STATUS.DOING : values.status,
                         startDate,
                         assignedUser: assignedUser
                             ? {
-                                  name: assignedUser.username,
                                   uid: assignedUser.uid,
+                                  name: assignedUser.username,
                                   role: assignedUser.role,
                               }
                             : null,
@@ -127,32 +125,6 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                             <p>{timestampToDate(endDate)}</p>
                                         </div>
                                     )}
-                                </div>
-                            </div>
-                            <div className="my-3.5">
-                                <h4 className="mb-1 text-sm font-medium">Tasks</h4>
-                                <div className="grid max-h-24 gap-2 overflow-y-auto md:max-h-52">
-                                    {tasks.map(({ name, estimatedCompletionTime, ...task }) => (
-                                        <div
-                                            key={task.uid}
-                                            className="flex  items-center justify-between rounded-md bg-gray-100 p-2  dark:bg-gray-800"
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                <div
-                                                    className={cn("h-3 w-3 rounded-full", {
-                                                        ["bg-gray-500"]: task.priority === TASK_PRIORITY.LOW,
-                                                        ["bg-green-500"]: task.priority === TASK_PRIORITY.MEDIUM,
-                                                        ["bg-red-500"]: task.priority === TASK_PRIORITY.HIGH,
-                                                    })}
-                                                ></div>
-                                                <p>{name}</p>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                                <FontAwesomeIcon icon={faClock} />
-                                                <span data:users-id="55">{estimatedCompletionTime}h</span>
-                                            </div>
-                                        </div>
-                                    ))}
                                 </div>
                             </div>
                         </Card.Content>

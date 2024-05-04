@@ -62,7 +62,7 @@ export const ColumnItem: FC<IColumnItemProps> = ({
                     )}
                 </div>
             </div>
-            <Modal isOpen={isModalOpen} close={toggleModal}>
+            <Modal large isOpen={isModalOpen} close={toggleModal}>
                 {modalContent}
             </Modal>
         </li>

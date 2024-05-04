@@ -20,12 +20,10 @@ export const UsersDropdown: FC<IUsersDropdownProps> = ({ userUid, data, currentU
             items={filteredData}
             displayValue={
                 <>
-                    {currentUser && (
-                        <div className="flex gap-2 whitespace-nowrap">
-                            <p>{currentUser.username}</p>
-                            <p className="text-sm text-gray-500 ">{` - ${USER_ROLE_NAME[currentUser.role]}`}</p>
-                        </div>
-                    )}
+                    <div className="flex gap-2 whitespace-nowrap">
+                        <p>{currentUser?.username ?? "User"}</p>
+                        <p className="text-sm text-gray-500 ">{` - ${currentUser?.role ? USER_ROLE_NAME[currentUser.role] : "Assign user"}`}</p>
+                    </div>
                 </>
             }
         >
