@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useFetchStories } from "src/libs";
-import { Content, SearchStories, SearchTasks, TasksList } from "./components";
+import { Content, SearchStories, SearchTasks } from "./components";
+import { TasksList } from "../TasksList";
 
 interface IStoriesListProps {
     projectUid: string;

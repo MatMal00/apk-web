@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { TTask } from "src/types";
-import { Column } from "../../../../Column";
+import { Column } from "../../Column";
 
 interface ITaskProps {
     task: TTask;

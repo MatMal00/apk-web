@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { TASK_STATUS, TTaskStatus } from "src/constants";
 import { TTask } from "src/types";
-import { Column } from "../../../Column";
 import { Task } from "./Task";
+import { Column } from "../Column";
 
 interface ITasksListProps {
     tasks: TTask[];
