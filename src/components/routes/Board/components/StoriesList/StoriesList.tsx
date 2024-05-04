@@ -10,7 +10,7 @@ interface IStoriesListProps {
 }
 
 export const StoriesList: FC<IStoriesListProps> = ({ projectUid, users }) => {
-    const { stories, tasks, addNewStory, addNewTask, updateStoryData, deleteStory, updateTaskData, deleteTask } =
+    const { stories, addNewStory, addNewTask, updateStoryData, deleteStory, updateTaskData, deleteTask } =
         useFetchStories(projectUid);
 
     return (
@@ -28,7 +28,7 @@ export const StoriesList: FC<IStoriesListProps> = ({ projectUid, users }) => {
                         <SearchTasks addNewTask={addNewTask} storyUid={story.uid} />
                         <TasksList
                             key={story.uid}
-                            tasks={tasks}
+                            tasks={story.tasks}
                             updateTaskData={updateTaskData}
                             deleteTask={deleteTask}
                             users={users}

@@ -15,15 +15,15 @@ import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
 
 export const useFetchStories = (projectUid: string) => {
-    const [searchParams] = useSearchParams();
-    const searchStories = searchParams.get("searchStories") ?? "";
-    const searchTasks = searchParams.get("searchTasks") ?? "";
-
     const { currentUser, updateUserData } = useAuth();
     const { data, error, isLoading, mutate } = useSWRImmutable<TStory[], string>(
         `/projects/${projectUid}/stories`,
         fetchStoriesAction
     );
+
+    const [searchParams] = useSearchParams();
+    const searchStories = searchParams.get("searchStories") ?? "";
+    const searchTasks = searchParams.get("searchTasks") ?? "";
 
     const addNewStory = useCallback(
         async (newStory: Omit<TStory, "uid">) => {
@@ -132,16 +132,16 @@ export const useFetchStories = (projectUid: string) => {
         [currentUser, mutate, projectUid]
     );
 
-    const filteredStories =
+    const filteredStoriesByStory =
         data?.filter((story) => story.name.toLowerCase().includes(searchStories.toLowerCase())) ?? [];
-    const filteredTasks =
-        filteredStories
-            ?.map((story) => story.tasks.filter((task) => task.name.toLowerCase().includes(searchTasks.toLowerCase())))
-            .flat() ?? [];
+    const filteredStoriesByTask =
+        filteredStoriesByStory.map((story) => ({
+            ...story,
+            tasks: story.tasks.filter((task) => task.name.toLowerCase().includes(searchTasks.toLowerCase())),
+        })) ?? [];
 
     return {
-        stories: filteredStories,
-        tasks: filteredTasks,
+        stories: filteredStoriesByTask,
         error,
         isLoading,
         updateStoryData,
