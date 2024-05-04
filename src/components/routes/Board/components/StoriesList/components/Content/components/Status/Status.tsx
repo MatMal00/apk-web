@@ -44,7 +44,7 @@ export const Status: FC<IStatusProps> = ({ story: { priority, status, estimatedC
                         }
                     )}
                 />
-                <span>{statusText[status]}</span>
+                <span className="whitespace-nowrap">{statusText[status]}</span>
             </div>
             {!!estimatedCompletionTime && (
                 <p className="self-end text-gray-500 dark:text-gray-400">{`${estimatedCompletionTime} ${completionTime}`}</p>
