@@ -2,6 +2,7 @@ import { Fragment, ReactNode } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useField } from "formik";
+import { twMerge } from "tailwind-merge";
 import cn from "classnames";
 
 interface IDropdownProps<T extends { uid: string }> {
@@ -9,7 +10,9 @@ interface IDropdownProps<T extends { uid: string }> {
     items: T[] | string[];
     label: string;
     displayValue?: ReactNode;
+    onClick?: (data: T) => void;
     children?: (item: T) => ReactNode;
+    className?: string;
 }
 
 export const Dropdown = <T extends { uid: string }>({
@@ -18,13 +21,15 @@ export const Dropdown = <T extends { uid: string }>({
     label,
     displayValue,
     children,
+    onClick,
+    className,
 }: IDropdownProps<T>) => {
     const [field, , helpers] = useField(name);
     return (
         <div className="flex flex-col gap-1">
             <h6 className="text-sm font-semibold">{label}</h6>
             <div className="flex">
-                <Menu as="div" className="relative inline-block basis-24 text-left">
+                <Menu as="div" className={twMerge("relative inline-block basis-24 text-left", className)}>
                     <div>
                         <Menu.Button className="inline-flex w-full justify-start gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                             {displayValue ? displayValue : field.value}
@@ -56,9 +61,13 @@ export const Dropdown = <T extends { uid: string }>({
                                                             "bg-gray-100 text-gray-900": active,
                                                         }
                                                     )}
-                                                    onClick={() =>
-                                                        isString ? helpers.setValue(item) : helpers.setValue(item.uid)
-                                                    }
+                                                    onClick={() => {
+                                                        if (onClick && !isString) onClick(item);
+                                                        else
+                                                            isString
+                                                                ? helpers.setValue(item)
+                                                                : helpers.setValue(item.uid);
+                                                    }}
                                                 >
                                                     {isString ? item : children?.(item)}
                                                 </button>

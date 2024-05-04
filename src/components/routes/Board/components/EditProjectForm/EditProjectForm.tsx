@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import { FC } from "react";
-import { Button, Card, Input, TextArea } from "src/components/common";
+import { AddUserToProjectDropdown, Button, Card, Input, TextArea } from "src/components/common";
 import { timestampToDate } from "src/helpers";
 import { useFetchUsers } from "src/libs";
 import { TProject } from "src/types";
@@ -21,7 +21,7 @@ export const EditProjectForm: FC<IEditProjectFormProps> = ({
     const { data: users = [] } = useFetchUsers();
 
     const participants = users.filter((user) => watchers.includes(user.uid));
-
+    const excludedUserFromProject = users.filter((user) => !watchers.includes(user.uid));
     return (
         <Card className="w-full cursor-default rounded-lg bg-white p-4 shadow-xl md:p-0">
             <Card.Header className="df justify-between border-b pb-4">
@@ -56,6 +56,7 @@ export const EditProjectForm: FC<IEditProjectFormProps> = ({
                                         <p>{timestampToDate(createdAt)}</p>
                                     </div>
                                 </div>
+                                <AddUserToProjectDropdown users={excludedUserFromProject} />
                             </div>
                             <div className="my-3.5">
                                 <h4 className="mb-1 text-sm font-medium">Participants</h4>
