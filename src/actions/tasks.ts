@@ -1,20 +1,8 @@
 import { TStory, TTask } from "src/types";
 import { deleteRequest, postRequest, updateRequest } from "./mutations";
-import { fetcher } from "./fetcher";
-import { mapToCommonResponseModel } from "src/utils";
+import { mapBackToObjectModel } from "src/utils";
 
-type TStoryResponseModel = { tasks: { [key: string]: TTask } } & Omit<TStory, "tasks">;
-
-export const fetchTasksAction = async (projectUid: string): Promise<TTask[]> => {
-    try {
-        const response = await fetcher<{ [key: string]: TStoryResponseModel }>(`/projects/${projectUid}/stories`);
-        const stories = mapToCommonResponseModel<TStoryResponseModel>(response);
-        return stories.map((story) => mapToCommonResponseModel<TTask>(story.tasks)).flat();
-    } catch (error) {
-        console.error({ error });
-        return [];
-    }
-};
+type TStoryToUpdateModel = Omit<TStory, "tasks"> & { tasks: { [key: string]: Omit<TTask, "uid"> } };
 
 export const addNewTaskAction = async (
     newTask: Omit<TTask, "uid">,
@@ -24,15 +12,21 @@ export const addNewTaskAction = async (
     if (!stories) return [];
 
     const storyToUpdate = stories.find((story) => story.uid === newTask.storyUid);
-    if (!storyToUpdate) throw new Error("Story not found");
+    const uid = await postRequest(`/projects/${projectUid}/stories/${newTask.storyUid}/tasks`, newTask);
 
+    if (!storyToUpdate || !uid) throw new Error("Story not found");
+
+    const taskWithUid = { ...newTask, uid };
     const estimatedCompletionTime =
         storyToUpdate.tasks.reduce((acc, task) => acc + task.estimatedCompletionTime, 0) +
         newTask.estimatedCompletionTime;
-    const updatedStory = { ...storyToUpdate, estimatedCompletionTime };
-    await updateRequest(`/projects/${projectUid}/stories/${newTask.storyUid}`, updatedStory);
 
-    const uid = await postRequest(`/projects/${projectUid}/stories/${newTask.storyUid}/tasks`, newTask);
+    const updatedStory: TStoryToUpdateModel = {
+        ...storyToUpdate,
+        estimatedCompletionTime,
+        tasks: mapBackToObjectModel([...storyToUpdate.tasks, taskWithUid]),
+    };
+    await updateRequest(`/projects/${projectUid}/stories/${newTask.storyUid}`, updatedStory);
 
     if (!uid) throw new Error("Something went wrong");
 
@@ -57,18 +51,38 @@ export const updateTaskAction = async (
             if (task.uid !== updatedTask.uid) return acc + task.estimatedCompletionTime;
             return acc;
         }, 0) + updatedTask.estimatedCompletionTime;
+    const updatedTasks = storyToUpdate.tasks.map((task) => (task.uid === updatedTask.uid ? updatedTask : task));
 
-    const updatedStory = {
+    const updatedStory: TStoryToUpdateModel = {
         ...storyToUpdate,
-        tasks: storyToUpdate.tasks.map((task) => (task.uid === updatedTask.uid ? updatedTask : task)),
+        tasks: mapBackToObjectModel(updatedTasks),
         estimatedCompletionTime,
     };
     await updateRequest(`/projects/${projectUid}/stories/${updatedTask.storyUid}`, updatedStory);
 
-    return stories.map((story) => (story.uid === updatedTask.storyUid ? updatedStory : story));
+    return stories.map((story) =>
+        story.uid === updatedTask.storyUid ? { ...storyToUpdate, tasks: updatedTasks, estimatedCompletionTime } : story
+    );
 };
 
 export const deleteTaskAction = async (task: TTask, projectUid: string, stories?: TStory[]) => {
+    if (!stories) return [];
+
+    const storyToUpdate = stories.find((story) => story.uid === task.storyUid);
+    if (!storyToUpdate) throw new Error("Story not found");
+
+    const estimatedCompletionTime = storyToUpdate.tasks.reduce((acc, storyTask) => {
+        if (storyTask.uid !== task.uid) return acc + storyTask.estimatedCompletionTime;
+        return acc;
+    }, 0);
+
+    const updatedStory: TStoryToUpdateModel = {
+        ...storyToUpdate,
+        tasks: mapBackToObjectModel(storyToUpdate.tasks),
+        estimatedCompletionTime,
+    };
+
+    await updateRequest(`/projects/${projectUid}/stories/${task.storyUid}`, updatedStory);
     await deleteRequest(`/projects/${projectUid}/stories/${task.storyUid}/tasks/${task.uid}`);
 
     return (stories ?? []).map((story) => ({
