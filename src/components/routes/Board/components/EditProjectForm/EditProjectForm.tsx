@@ -3,19 +3,21 @@ import { FC } from "react";
 import { AddUserToProjectDropdown, Button, Card, Input, TextArea } from "src/components/common";
 import { timestampToDate } from "src/helpers";
 import { useFetchUsers } from "src/libs";
-import { TProject } from "src/types";
+import { TCommonUser, TProject } from "src/types";
 import { USER_ROLE_NAME } from "src/constants";
 
 interface IEditProjectFormProps {
     project: TProject;
     close: () => void;
     updateProjectData: (updatedData: TProject) => void;
+    addUserToProject: (user: TCommonUser) => void;
 }
 
 export const EditProjectForm: FC<IEditProjectFormProps> = ({
     project,
     project: { name: initialName, description: initialDescription, createdAt, watchers, logoUrl: initialLogoUrl },
     updateProjectData,
+    addUserToProject,
     close,
 }) => {
     const { data: users = [] } = useFetchUsers();
@@ -56,7 +58,10 @@ export const EditProjectForm: FC<IEditProjectFormProps> = ({
                                         <p>{timestampToDate(createdAt)}</p>
                                     </div>
                                 </div>
-                                <AddUserToProjectDropdown users={excludedUserFromProject} />
+                                <AddUserToProjectDropdown
+                                    users={excludedUserFromProject}
+                                    addUserToProject={addUserToProject}
+                                />
                             </div>
                             <div className="my-3.5">
                                 <h4 className="mb-1 text-sm font-medium">Participants</h4>

@@ -4,10 +4,11 @@ import { TCommonUser } from "src/types";
 
 interface IAddUserToProjectDropdownProps {
     users: TCommonUser[];
+    addUserToProject: (user: TCommonUser) => void;
 }
 
-export const AddUserToProjectDropdown: FC<IAddUserToProjectDropdownProps> = ({ users }) => {
-    const handleAddUswer = (_user: TCommonUser) => {};
+export const AddUserToProjectDropdown: FC<IAddUserToProjectDropdownProps> = ({ users, addUserToProject }) => {
+    const handleAddUswer = (user: TCommonUser) => addUserToProject(user);
     return (
         <Dropdown<TCommonUser>
             label="Add to project"

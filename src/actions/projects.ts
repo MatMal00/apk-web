@@ -16,7 +16,7 @@ export const fetchProjectsAction = async (url: string): Promise<TProject[]> => {
 export const fetchProjectAction = async (projectUid: string): Promise<TProject | undefined> => {
     try {
         const project = await fetcher<TProject>(`/projects/${projectUid}`);
-        return project;
+        return { ...project, uid: projectUid };
     } catch (error) {
         console.error({ error });
         return undefined;
@@ -62,5 +62,19 @@ export const removeProjectAction = async (projectUid: string, user: TCommonUser,
 
 export const updateProjectAction = async (updatedProject: TProject, projectUid: string): Promise<TProject> => {
     await updateRequest(`/projects/${projectUid}`, updatedProject);
+    return updatedProject;
+};
+
+export const addUserToProjectAction = async (user: TCommonUser, project?: TProject): Promise<TProject> => {
+    if (!project) throw new Error("Project not found");
+
+    const updatedProject: TProject = { ...project, watchers: [...new Set([...(project.watchers ?? []), user.uid])] };
+    const updatedUser: TCommonUser = { ...user, projects: [...new Set([...(user.projects ?? []), project.uid])] };
+
+    await Promise.all([
+        updateRequest(`/projects/${project.uid}`, updatedProject),
+        updateRequest(`/users/${user.uid}`, updatedUser),
+    ]);
+
     return updatedProject;
 };

@@ -11,7 +11,7 @@ interface IBoardProps {}
 export const Board: FC<IBoardProps> = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { projectUid = "" } = useParams<{ projectUid: string }>();
-    const { project, updateProjectData } = useFetchProject(projectUid);
+    const { project, updateProjectData, addUserToProject } = useFetchProject(projectUid);
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
     return (
@@ -33,6 +33,7 @@ export const Board: FC<IBoardProps> = () => {
                         project={project}
                         close={handleToggleModal}
                         updateProjectData={updateProjectData}
+                        addUserToProject={addUserToProject}
                     />
                 </Modal>
             )}
