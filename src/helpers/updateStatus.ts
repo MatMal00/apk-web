@@ -27,7 +27,6 @@ export const updateStatus = (
     initialUser?: TAssignedUser,
     nextUser?: TAssignedUser
 ) => {
-    console.log({ initialStatus, nextStatus, initialUser, nextUser });
     switch (true) {
         case !initialUser && !nextUser && (nextStatus === TASK_STATUS.DOING || nextStatus === TASK_STATUS.DONE):
             throw new Error("You must assign a user to the task before changing the status to 'Doing' or 'Done'");

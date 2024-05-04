@@ -74,12 +74,14 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                   role: assignedUser.role,
                               }
                             : null;
+                        const nextStatus = updateStatus(initialStatus, values.status, initialAssignedUser, mappedUser);
+
                         updateStoryData({
                             ...story,
                             ...values,
                             endDate: updateEndDate(values.status),
-                            startDate: updateStartDate(initialStatus, values.status, story?.startDate),
-                            status: updateStatus(values.status, initialStatus, initialAssignedUser, mappedUser),
+                            startDate: updateStartDate(initialStatus, nextStatus, story?.startDate),
+                            status: nextStatus,
                             assignedUser: mappedUser,
                         });
                         close();
