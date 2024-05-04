@@ -4,19 +4,18 @@ import { USER_ROLE, USER_ROLE_NAME } from "src/constants";
 import { TCommonUser } from "src/types";
 
 interface IUsersDropdownProps {
-    userUid: string;
     data: TCommonUser[];
     currentUser?: TCommonUser;
 }
 
-export const UsersDropdown: FC<IUsersDropdownProps> = ({ userUid, data, currentUser }) => {
+export const UsersDropdown: FC<IUsersDropdownProps> = ({ data, currentUser }) => {
     const filteredData = data.filter(
         (user) => (user.uid !== currentUser?.uid && user.role === USER_ROLE.DEV) || user.role === USER_ROLE.DEVOPS
     );
     return (
         <Dropdown<TCommonUser>
             label="Assigned User"
-            name={userUid}
+            name="userUid"
             items={filteredData}
             displayValue={
                 <>

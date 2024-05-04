@@ -102,7 +102,6 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                                     )}
                                     <UsersDropdown
                                         currentUser={users.find((user) => user.uid === userUid)}
-                                        userUid={initialAssignedUser?.uid ?? ""}
                                         data={users}
                                     />
                                 </div>
