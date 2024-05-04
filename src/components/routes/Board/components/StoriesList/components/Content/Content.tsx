@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import { TStory } from "src/types";
+import { TCommonUser, TStory } from "src/types";
 import { Details, Status } from "./components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
@@ -10,9 +10,10 @@ interface IContentProps {
     story: TStory;
     updateStoryData: (updatedData: TStory) => void;
     deleteStory: (storyUid: string) => void;
+    users: TCommonUser[];
 }
 
-export const Content: FC<IContentProps> = ({ story, updateStoryData, deleteStory }) => {
+export const Content: FC<IContentProps> = ({ story, updateStoryData, deleteStory, users }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleToggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
@@ -39,6 +40,7 @@ export const Content: FC<IContentProps> = ({ story, updateStoryData, deleteStory
                     story={story}
                     updateStoryData={updateStoryData}
                     deleteStory={deleteStory}
+                    users={users}
                 />
             </Modal>
         </>

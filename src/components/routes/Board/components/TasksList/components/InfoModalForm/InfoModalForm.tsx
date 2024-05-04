@@ -1,20 +1,19 @@
 import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
-import { timestampToDate } from "src/helpers";
-import { TTask } from "src/types";
+import { timestampToDate, updateEndDate, updateStartDate, updateStatus } from "src/helpers";
+import { TAssignedUser, TCommonUser, TTask } from "src/types";
 import { PriorityDropdown, StatusDropdown, UsersDropdown } from "src/components/common/Form/Dropdown/components";
-import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { TASK_STATUS } from "src/constants";
-// import cn from "classnames";
+import toast from "react-hot-toast";
 
 interface IInfoModalFormProps {
     close: () => void;
     task: TTask;
     updateTaskData: (updatedData: TTask) => Promise<void>;
     deleteTask: (task: TTask) => Promise<void>;
+    users: TCommonUser[];
 }
 
 export const InfoModalForm: FC<IInfoModalFormProps> = ({
@@ -33,13 +32,12 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
     },
     deleteTask,
     updateTaskData,
+    users,
 }) => {
     const handleDeleteStory = () => {
         deleteTask(task);
         close();
     };
-
-    const { data: users = [] } = useFetchUsers();
     return (
         <Card className="w-full cursor-default rounded-lg bg-white p-4 shadow-xl md:p-0">
             <Card.Header className="df justify-between border-b pb-4">
@@ -62,27 +60,32 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                     estimatedCompletionTime: initialEstimatedCompletionTime,
                 }}
                 onSubmit={(values) => {
-                    const endDate = values.status === TASK_STATUS.DONE ? new Date().getTime() : null;
-                    const startDate =
-                        initialStatus === TASK_STATUS.TO_DO ? new Date().getTime() : task.startDate ?? null;
-                    const updateStatus = !initialAssignedUser?.uid;
-                    const assignedUser = users.find((user) => user.uid === values.userUid);
-
-                    updateTaskData({
-                        ...task,
-                        ...values,
-                        endDate,
-                        status: updateStatus ? TASK_STATUS.DOING : values.status,
-                        startDate,
-                        assignedUser: assignedUser
+                    try {
+                        const assignedUser = users.find((user) => user.uid === values.userUid);
+                        const mappedUser: TAssignedUser = assignedUser
                             ? {
                                   uid: assignedUser.uid,
                                   name: assignedUser.username,
                                   role: assignedUser.role,
                               }
-                            : null,
-                    });
-                    close();
+                            : null;
+
+                        updateTaskData({
+                            ...task,
+                            ...values,
+                            endDate: updateEndDate(values.status),
+                            startDate: updateStartDate(initialStatus, values.status, task?.startDate),
+                            status: updateStatus(initialStatus, values.status, initialAssignedUser, mappedUser),
+                            assignedUser: mappedUser,
+                        });
+                        close();
+                    } catch (error: unknown) {
+                        if (error instanceof Error) {
+                            toast.error(error.message);
+                        } else {
+                            toast.error(String(error));
+                        }
+                    }
                 }}
             >
                 {({ values: { status, priority, userUid, estimatedCompletionTime }, dirty }) => {

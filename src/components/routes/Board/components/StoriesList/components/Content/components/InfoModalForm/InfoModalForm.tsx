@@ -1,20 +1,21 @@
 import { FC } from "react";
 import { Button, Card, Input, TextArea } from "src/components/common";
 import { Form, Formik } from "formik";
-import { timestampToDate } from "src/helpers";
-import { TStory } from "src/types";
+import { timestampToDate, updateEndDate, updateStartDate, updateStatus } from "src/helpers";
+import { TAssignedUser, TCommonUser, TStory } from "src/types";
 import { PriorityDropdown, StatusDropdown, UsersDropdown } from "src/components/common/Form/Dropdown/components";
-import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { TASK_PRIORITY, TASK_STATUS } from "src/constants";
+import { TASK_PRIORITY } from "src/constants";
 import cn from "classnames";
+import toast from "react-hot-toast";
 
 interface IInfoModalFormProps {
     close: () => void;
     story: TStory;
     updateStoryData: (updatedData: TStory) => void;
     deleteStory: (storyUid: string) => void;
+    users: TCommonUser[];
 }
 
 export const InfoModalForm: FC<IInfoModalFormProps> = ({
@@ -35,13 +36,13 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
     },
     deleteStory,
     updateStoryData,
+    users,
 }) => {
     const handleDeleteStory = () => {
         deleteStory(uid);
         close();
     };
 
-    const { data: users = [] } = useFetchUsers();
     const completionTime = estimatedCompletionTime > 1 ? "hours" : "hour";
     return (
         <Card className="w-full cursor-default rounded-lg bg-white p-4 shadow-xl md:p-0">
@@ -64,26 +65,31 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
                     userUid: initialAssignedUser?.uid ?? "",
                 }}
                 onSubmit={(values) => {
-                    const endDate = values.status === TASK_STATUS.DONE ? new Date().getTime() : null;
-                    const startDate =
-                        initialStatus === TASK_STATUS.TO_DO ? new Date().getTime() : story.startDate ?? null;
-                    const updateStatus = !initialAssignedUser?.uid;
-                    const assignedUser = users.find((user) => user.uid === values.userUid);
-                    updateStoryData({
-                        ...story,
-                        ...values,
-                        endDate,
-                        status: updateStatus ? TASK_STATUS.DOING : values.status,
-                        startDate,
-                        assignedUser: assignedUser
+                    try {
+                        const assignedUser = users.find((user) => user.uid === values.userUid);
+                        const mappedUser: TAssignedUser = assignedUser
                             ? {
-                                  name: assignedUser.username,
                                   uid: assignedUser.uid,
+                                  name: assignedUser.username,
                                   role: assignedUser.role,
                               }
-                            : null,
-                    });
-                    close();
+                            : null;
+                        updateStoryData({
+                            ...story,
+                            ...values,
+                            endDate: updateEndDate(values.status),
+                            startDate: updateStartDate(initialStatus, values.status, story?.startDate),
+                            status: updateStatus(values.status, initialStatus, initialAssignedUser, mappedUser),
+                            assignedUser: mappedUser,
+                        });
+                        close();
+                    } catch (error: unknown) {
+                        if (error instanceof Error) {
+                            toast.error(error.message);
+                        } else {
+                            toast.error(String(error));
+                        }
+                    }
                 }}
             >
                 {({ values: { status, priority, userUid }, dirty }) => (
