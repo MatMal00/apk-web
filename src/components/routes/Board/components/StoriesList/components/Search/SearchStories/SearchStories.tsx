@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import { AddStoryForm } from "./AddStoryForm";
 import { TStory } from "src/types";
 import { useSearchParams } from "react-router-dom";
+import { useQueryParams } from "src/hooks";
 
 interface ISearchStoriesProps {
     addNewStory: (newStory: Omit<TStory, "uid">) => Promise<void>;
@@ -13,6 +14,8 @@ interface ISearchStoriesProps {
 
 export const SearchStories: FC<ISearchStoriesProps> = ({ addNewStory }) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const { getUpdatedQueries } = useQueryParams();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const search = searchParams.get("searchStories") ?? "";
 
@@ -20,7 +23,8 @@ export const SearchStories: FC<ISearchStoriesProps> = ({ addNewStory }) => {
 
     const handleSearchStories = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setSearchParams(value.length ? { ...searchParams, searchStories: value } : undefined);
+
+        setSearchParams(getUpdatedQueries("searchStories", value));
     };
 
     return (

@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import { AddTaskForm } from "./AddTaskForm";
 import { TTask } from "src/types";
 import { useSearchParams } from "react-router-dom";
+import { useQueryParams } from "src/hooks";
 
 interface ISearchTasksProps {
     addNewTask: (newTask: Omit<TTask, "uid">) => Promise<void>;
@@ -14,6 +15,7 @@ interface ISearchTasksProps {
 
 export const SearchTasks: FC<ISearchTasksProps> = ({ addNewTask, storyUid }) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const { getUpdatedQueries } = useQueryParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const search = searchParams.get("searchTasks") ?? "";
 
@@ -21,7 +23,8 @@ export const SearchTasks: FC<ISearchTasksProps> = ({ addNewTask, storyUid }) => 
 
     const handleSearchTasks = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setSearchParams(value.length ? { ...searchParams, searchTasks: value } : undefined);
+
+        setSearchParams(getUpdatedQueries("searchTasks", value));
     };
 
     return (
