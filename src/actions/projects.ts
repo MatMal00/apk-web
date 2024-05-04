@@ -59,3 +59,8 @@ export const removeProjectAction = async (projectUid: string, user: TCommonUser,
 
     return (projects ?? []).filter((project) => project.uid !== projectUid);
 };
+
+export const updateProjectAction = async (updatedProject: TProject, projectUid: string): Promise<TProject> => {
+    await updateRequest(`/projects/${projectUid}`, updatedProject);
+    return updatedProject;
+};

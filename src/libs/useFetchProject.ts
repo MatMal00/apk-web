@@ -1,4 +1,6 @@
-import { fetchProjectAction } from "src/actions";
+import { useCallback } from "react";
+import toast from "react-hot-toast";
+import { fetchProjectAction, updateProjectAction } from "src/actions";
 import { TProject } from "src/types";
 import useSWRImmutable from "swr/immutable";
 
@@ -8,5 +10,23 @@ export const useFetchProject = (projectUid: string) => {
         () => fetchProjectAction(projectUid)
     );
 
-    return { project: data, error, isLoading, mutate };
+    const updateProjectData = useCallback(
+        async (updatedData: TProject) => {
+            try {
+                await mutate(() => updateProjectAction(updatedData, projectUid), {
+                    optimisticData: (project) => project,
+                    populateCache: true,
+                    revalidate: false,
+                });
+
+                toast.success("Successfully updated project data");
+            } catch (err) {
+                console.log(err);
+                toast.error("Failed to update project data");
+            }
+        },
+        [mutate, projectUid]
+    );
+
+    return { project: data, error, isLoading, updateProjectData, mutate };
 };
