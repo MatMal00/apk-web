@@ -10,10 +10,15 @@ import {
 } from "src/actions";
 import { TStory, TTask } from "src/types";
 import { useAuth } from "src/hooks";
+import { useSearchParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 import toast from "react-hot-toast";
 
 export const useFetchStories = (projectUid: string) => {
+    const [searchParams] = useSearchParams();
+    const searchStories = searchParams.get("searchStories") ?? "";
+    const searchTasks = searchParams.get("searchTasks") ?? "";
+
     const { currentUser, updateUserData } = useAuth();
     const { data, error, isLoading, mutate } = useSWRImmutable<TStory[], string>(
         `/projects/${projectUid}/stories`,
@@ -127,8 +132,16 @@ export const useFetchStories = (projectUid: string) => {
         [currentUser, mutate, projectUid]
     );
 
+    const filteredStories =
+        data?.filter((story) => story.name.toLowerCase().includes(searchStories.toLowerCase())) ?? [];
+    const filteredTasks =
+        filteredStories
+            ?.map((story) => story.tasks.filter((task) => task.name.toLowerCase().includes(searchTasks.toLowerCase())))
+            .flat() ?? [];
+
     return {
-        stories: data,
+        stories: filteredStories,
+        tasks: filteredTasks,
         error,
         isLoading,
         updateStoryData,
