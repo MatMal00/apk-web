@@ -18,7 +18,7 @@ export const StoriesList: FC<IStoriesListProps> = ({ projectUid, users }) => {
             <SearchStories addNewStory={addNewStory} />
             {stories?.map((story) => {
                 return (
-                    <div key={story.uid} className="flex flex-col gap-6 rounded-lg bg-gray-200 p-6">
+                    <div key={story.uid} className="flex flex-col gap-6 rounded-lg bg-gray-200 p-6 dark:bg-zinc-950">
                         <Content
                             story={story}
                             updateStoryData={updateStoryData}

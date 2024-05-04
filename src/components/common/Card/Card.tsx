@@ -14,7 +14,11 @@ interface ICardElement extends FC<ICardProps> {
 }
 
 export const Card: ICardElement = ({ children, className }) => {
-    return <div className={twMerge("cursor-pointer rounded-lg border bg-white shadow-sm", className)}>{children}</div>;
+    return (
+        <div className={twMerge("cursor-pointer rounded-lg border bg-white shadow-sm dark:bg-zinc-950", className)}>
+            {children}
+        </div>
+    );
 };
 
 Card.Header = CardHeader;

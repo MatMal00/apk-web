@@ -20,7 +20,7 @@ export const TasksList: FC<ITasksListProps> = ({ tasks, updateTaskData, deleteTa
         { todo: [], doing: [], done: [] } as Record<TTaskStatus, TTask[]>
     );
     return (
-        <div className="flex flex-col gap-6 rounded-lg bg-gray-200">
+        <div className="flex flex-col gap-6 rounded-lg bg-gray-200 dark:bg-zinc-950">
             <div className="grid gap-6 md:grid-cols-3">
                 <Column title="To Do">
                     {groupedTasks?.[TASK_STATUS.TO_DO].map((task) => (

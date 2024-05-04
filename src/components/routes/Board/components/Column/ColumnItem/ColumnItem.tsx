@@ -30,7 +30,7 @@ export const ColumnItem: FC<IColumnItemProps> = ({
     return (
         <>
             <li className="cursor-pointer space-y-4" onClick={toggleModal}>
-                <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-700">
+                <div className="rounded-lg bg-white p-4 shadow dark:bg-zinc-900">
                     <div className="flex items-start justify-between">
                         <div>
                             <h3

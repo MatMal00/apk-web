@@ -11,7 +11,7 @@ interface IHeaderProps {}
 export const Header: FC<IHeaderProps> = () => {
     const { theme, toggletheme } = useHandleDarkMode();
     return (
-        <header className="mb-6 flex h-16 items-center justify-between border-b bg-gray-900 px-4 text-white md:px-6">
+        <header className="mb-6 flex h-16 items-center justify-between border-b bg-gray-900 px-4 text-white md:px-6 dark:border-gray-800 dark:bg-black">
             <p className="flex items-center gap-2 text-lg font-semibold">
                 <span>Task Manager</span>
             </p>
