@@ -6,7 +6,7 @@ import { TStory } from "src/types";
 import { PriorityDropdown, StatusDropdown, UsersDropdown } from "src/components/common/Form/Dropdown/components";
 import { useFetchUsers } from "src/libs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { TASK_PRIORITY, TASK_STATUS } from "src/constants";
 import cn from "classnames";
 
@@ -14,6 +14,7 @@ interface IInfoModalFormProps {
     close: () => void;
     story: TStory;
     updateStoryData: (updatedData: TStory) => void;
+    deleteStory: (storyUid: string) => void;
 }
 
 export const InfoModalForm: FC<IInfoModalFormProps> = ({
@@ -30,15 +31,29 @@ export const InfoModalForm: FC<IInfoModalFormProps> = ({
         startDate,
         assignedUser: initialAssignedUser,
         tasks,
+        uid,
     },
+    deleteStory,
     updateStoryData,
 }) => {
+    const handleDeleteStory = () => {
+        deleteStory(uid);
+        close();
+    };
+
     const { data = [] } = useFetchUsers();
     const completionTime = estimatedCompletionTime > 1 ? "hours" : "hour";
     return (
         <Card className="w-full cursor-default rounded-lg bg-white p-4 shadow-xl md:p-0">
-            <Card.Header className="border-b pb-4">
+            <Card.Header className="df justify-between border-b pb-4">
                 <h3 className="text-2xl font-semibold">{initialName}</h3>
+                <button
+                    onClick={handleDeleteStory}
+                    className="px-4 py-3 text-left text-sm text-gray-700 transition-colors hover:bg-red-900 hover:text-gray-900"
+                    role="menuitem"
+                >
+                    <FontAwesomeIcon icon={faTrash} />
+                </button>
             </Card.Header>
             <Formik
                 initialValues={{

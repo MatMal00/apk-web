@@ -1,5 +1,11 @@
 import { useCallback } from "react";
-import { addNewStoryAction, addNewTaskAction, fetchStoriesAction, updateStoryAction } from "src/actions";
+import {
+    addNewStoryAction,
+    addNewTaskAction,
+    deleteStoryAction,
+    fetchStoriesAction,
+    updateStoryAction,
+} from "src/actions";
 import { TStory, TTask } from "src/types";
 import { useAuth } from "src/hooks";
 import useSWRImmutable from "swr/immutable";
@@ -65,5 +71,23 @@ export const useFetchStories = (projectUid: string) => {
         [mutate, projectUid]
     );
 
-    return { stories: data, error, isLoading, updateStoryData, addNewStory, addNewTask };
+    const deleteStory = useCallback(
+        async (storyUid: string) => {
+            try {
+                if (!currentUser) return;
+
+                await mutate((stories) => deleteStoryAction(storyUid, projectUid, stories), {
+                    optimisticData: (stories) => (stories ?? []).filter((project) => project.uid !== storyUid),
+                    populateCache: true,
+                    revalidate: false,
+                });
+                toast.success("Successfully removed story");
+            } catch {
+                toast.error("Failed to removed story");
+            }
+        },
+        [currentUser, mutate, projectUid]
+    );
+
+    return { stories: data, error, isLoading, updateStoryData, addNewStory, addNewTask, deleteStory };
 };

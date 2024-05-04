@@ -1,5 +1,5 @@
 import { TStory, TTask } from "src/types";
-import { postRequest, updateRequest } from "./mutations";
+import { deleteRequest, postRequest, updateRequest } from "./mutations";
 import { fetcher } from "./fetcher";
 import { mapToCommonResponseModel } from "src/utils";
 
@@ -40,4 +40,10 @@ export const updateStoryAction = async (
     await updateRequest(`/projects/${projectUid}/stories/${updatedStory.uid}`, updatedStory);
     const updatedStories = stories?.map((story) => (story.uid === updatedStory.uid ? updatedStory : story));
     return updatedStories ?? [];
+};
+
+export const deleteStoryAction = async (storyUid: string, projectUid: string, stories?: TStory[]) => {
+    await deleteRequest(`/projects/${projectUid}/stories/${storyUid}`);
+
+    return (stories ?? []).filter((story) => story.uid !== storyUid);
 };
