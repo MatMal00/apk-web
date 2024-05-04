@@ -18,8 +18,8 @@ export const AddStoryForm: FC<IAddStoryFormFormProps> = ({ close, addNewStory })
             </Card.Header>
             <Formik
                 initialValues={{
-                    name: "",
-                    description: "",
+                    name: "Add loading screens to the app",
+                    description: "Add loading screens to the app that contains variour animations and logo of the app.",
                     priority: TASK_PRIORITY.LOW,
                 }}
                 onSubmit={(values) => {
@@ -33,7 +33,7 @@ export const AddStoryForm: FC<IAddStoryFormFormProps> = ({ close, addNewStory })
                     close();
                 }}
             >
-                {({ values: { priority }, dirty }) => (
+                {({ values: { priority } }) => (
                     <Form>
                         <Card.Content className="block py-4">
                             <div className="flex max-h-72 flex-col space-y-4 overflow-y-auto pr-2.5 md:max-h-max md:p-2">
@@ -55,7 +55,7 @@ export const AddStoryForm: FC<IAddStoryFormFormProps> = ({ close, addNewStory })
                                 variant="secondary"
                                 text="Close"
                             />
-                            <Button type="submit" className="ml-2 basis-32" text="Save" disabled={!dirty} />
+                            <Button type="submit" className="ml-2 basis-32" text="Save" />
                         </Card.Footer>
                     </Form>
                 )}

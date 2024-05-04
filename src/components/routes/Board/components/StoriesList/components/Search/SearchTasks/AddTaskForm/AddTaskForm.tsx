@@ -19,8 +19,8 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask, storyUid
             </Card.Header>
             <Formik
                 initialValues={{
-                    name: "",
-                    description: "",
+                    name: "Add splash screen to the app",
+                    description: "Add splash screen to the app that contains variour animations and logo of the app.",
                     priority: TASK_PRIORITY.LOW,
                     estimatedCompletionTime: 0,
                 }}
@@ -34,7 +34,7 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask, storyUid
                     close();
                 }}
             >
-                {({ values: { priority, estimatedCompletionTime }, dirty }) => {
+                {({ values: { priority, estimatedCompletionTime } }) => {
                     const completionTime = estimatedCompletionTime > 1 ? "hours" : "hour";
 
                     return (
@@ -67,7 +67,7 @@ export const AddTaskForm: FC<IAddTaskFormProps> = ({ close, addNewTask, storyUid
                                     variant="secondary"
                                     text="Close"
                                 />
-                                <Button type="submit" className="ml-2 basis-32" text="Save" disabled={!dirty} />
+                                <Button type="submit" className="ml-2 basis-32" text="Save" />
                             </Card.Footer>
                         </Form>
                     );
