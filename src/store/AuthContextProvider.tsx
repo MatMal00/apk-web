@@ -45,6 +45,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
             retriveUserFromDb(user);
         } else {
             setCurrentUser(null);
+            setIsFetchingUser(false);
         }
 
         setIsInitializing(false);
@@ -77,7 +78,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         isInitializing,
         updateUserData,
     };
-
+    console.log({ isInitializing, isFetchingUser });
     return (
         <AuthContext.Provider value={state}>{isInitializing || isFetchingUser ? null : children}</AuthContext.Provider>
     );
