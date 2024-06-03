@@ -1,18 +1,3 @@
-# Semantic Commit Messages
-
-1. feat: (new feature)
-2. fix: (bug fix for the user)
-3. docs: (changes to the documentation)
-4. style: (formatting, missing semi colons, etc;)
-5. ref: (refactoring production code, eg. renaming a variable)
-6. chore: (updating grunt tasks etc;)
-
-![makeitmeme_4sMqZ](https://github.com/MatMal00/react-lab-project/assets/101005328/fcdbd667-e1a5-40a2-a473-a1ef071882aa)
-
-# React + TypeScript + Vite
-
-# API PROJECT DOCKS: - [@project/json-placeholder-api-docks](https://jsonplaceholder.typicode.com/?fbclid=IwAR0XNdBaY2E1Xdw3N6I5T-8M78I_z-oU_Avykzskb6TDtRpA048dmEJEfLY)
-
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
